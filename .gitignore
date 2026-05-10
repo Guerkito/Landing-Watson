@@ -1,0 +1,14 @@
+# IDEs and Tools
+.claude/
+.vscode/
+.idea/
+*.swp
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Project specific
+uploads/
+preview/
