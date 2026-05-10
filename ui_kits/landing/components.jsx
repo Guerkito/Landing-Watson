@@ -113,44 +113,39 @@ const Header = () => (
 );
 
 // ---------- Hero ----------
-const Hero = () => (
-  <section className="bg-hero" id="top">
-    <div className="container hero">
-      <Eyebrow>Inteligencia clínica local · Colombia</Eyebrow>
-      <h1>Sus médicos están perdiendo 2 horas al día llenando formularios.</h1>
-      <p className="lede">
-        Horas que podrían estar atendiendo pacientes. Existe una forma de recuperarlas
-        sin cambiar cómo trabaja su equipo. WATSON escucha la consulta, transcribe en
-        tiempo real con IA local y rellena la historia clínica directamente en
-        Dinámica Gerencial.
-      </p>
-      <div className="ctas">
-        <Button kind="primary" large>Solicitar demo <Icons.Arrow size={16}/></Button>
-        <Button kind="secondary" large>Ver cómo funciona</Button>
-      </div>
+const Hero = () => {
+  const [demoState, setDemoState] = useState("idle");
+  const { WATSONChromeFrame, WATSONWidget } = window;
 
-      <div className="hero-visual">
-        <div className="hero-form-demo">
-          <div className="form-mock" aria-hidden="true">
-            <div className="row label"></div>
-            <div className="row fill"></div>
-            <div className="row label" style={{ width: "22%" }}></div>
-            <div className="row fill r2"></div>
-            <div className="row fill r2" style={{ width: "70%" }}></div>
-            <div className="row label" style={{ width: "30%" }}></div>
-            <div className="row fill r3"></div>
-            <div className="row fill r3" style={{ width: "85%" }}></div>
-            <div className="row fill r4" style={{ width: "55%" }}></div>
-          </div>
-          <div className="hero-waves">
-            <div className="bar"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-            <div className="step-label">ESCUCHANDO · ONYX local</div>
-          </div>
+  return (
+    <section className="bg-hero" id="top">
+      <div className="container hero">
+        <Eyebrow>Inteligencia clínica local · Colombia</Eyebrow>
+        <h1>Sus médicos están perdiendo 2 horas al día llenando formularios.</h1>
+        <p className="lede">
+          Horas que podrían estar atendiendo pacientes. Existe una forma de recuperarlas
+          sin cambiar cómo trabaja su equipo. WATSON escucha la consulta, transcribe en
+          tiempo real con IA local y rellena la historia clínica directamente en
+          Dinámica Gerencial.
+        </p>
+        <div className="ctas">
+          <Button kind="primary" large>Solicitar demo <Icons.Arrow size={16}/></Button>
+          <Button kind="secondary" large>Ver cómo funciona</Button>
+        </div>
+
+        <div className="hero-visual" style={{ position: "relative", height: 600, marginTop: 80, borderRadius: 24, overflow: "hidden", border: "1px solid var(--border)", boxShadow: "0 40px 100px rgba(0,0,0,0.8)" }}>
+          {WATSONChromeFrame && <WATSONChromeFrame demoState={demoState} />}
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.6))" }} />
+          {WATSONWidget && (
+            <div style={{ position: "absolute", bottom: 0, right: 0, padding: 30, pointerEvents: "all" }}>
+              <WATSONWidget onStateChange={setDemoState} />
+            </div>
+          )}
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 // ---------- Generic section header ----------
 const SectionHeader = ({ kicker, title, lede, kickerColor }) => (
@@ -288,21 +283,55 @@ const Solution = () => {
                   <div style={{ paddingLeft: 16 }}>"dx": <span style={{ color: "var(--fg)" }}>"migraña sin aura"</span>,</div>
                   <div style={{ paddingLeft: 16 }}>"plan": <span style={{ color: "var(--fg)" }}>"AINE 400mg c/8h"</span></div>
                   <div style={{ color: "var(--blue)" }}>{"}"}</div>
-                  <div className="step-label" style={{ marginTop: 16, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--fg-muted)" }}>QWEN 2.5 · ESTRUCTURADO</div>
+                  <div className="step-label" style={{ marginTop: 16, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--fg-muted)" }}>MOTOR LOCAL · ESTRUCTURADO</div>
                 </div>
               )}
               {active === 2 && (
                 <div className="sv-step active" style={{ width: "100%" }}>
                   <div className="hero-form-demo" style={{ padding: 0, gridTemplateColumns: "1fr" }}>
-                    <div className="form-mock">
-                      <div className="row label"></div>
-                      <div className="row fill" style={{ '--p': '90%' }}></div>
-                      <div className="row label" style={{ width: "30%" }}></div>
-                      <div className="row fill r2"></div>
-                      <div className="row fill r3" style={{ width: "70%" }}></div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px", background: "var(--bg-card)", padding: "20px", borderRadius: "12px", border: "1px solid var(--border)" }}>
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "var(--fg-muted)", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>Motivo de Consulta</div>
+                        <div className="anim-text-1" style={{ fontSize: 13, padding: "8px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 6, border: "1px solid var(--border)" }}>Cefalea pulsátil 3 días evolución.</div>
+                      </div>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                        <div>
+                          <div style={{ fontSize: 9, fontWeight: 700, color: "var(--fg-muted)", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>Tensión Arterial</div>
+                          <div className="anim-text-2" style={{ fontSize: 13, padding: "8px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 6, border: "1px solid var(--border)" }}>140/90</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: 9, fontWeight: 700, color: "var(--fg-muted)", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>Frecuencia Cardíaca</div>
+                          <div className="anim-text-3" style={{ fontSize: 13, padding: "8px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 6, border: "1px solid var(--border)" }}>88 lpm</div>
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "var(--fg-muted)", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>Diagnóstico (CIE-10)</div>
+                        <div className="anim-text-4" style={{ fontSize: 13, padding: "8px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 6, border: "1px solid var(--border)" }}>G43.1 Migraña con aura</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "var(--fg-muted)", marginBottom: 4, letterSpacing: "0.05em", textTransform: "uppercase" }}>Plan y Manejo</div>
+                        <div className="anim-text-5" style={{ fontSize: 13, padding: "8px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 6, border: "1px solid var(--border)", minHeight: 44 }}>Sumatriptán 6mg SC. Reposo relativo.</div>
+                      </div>
                     </div>
                     <div className="step-label" style={{ marginTop: 16, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--green)" }}>INYECTADO EN DINÁMICA GERENCIAL</div>
                   </div>
+                  <style>{`
+                    .anim-text-1, .anim-text-2, .anim-text-3, .anim-text-4, .anim-text-5 {
+                      color: transparent;
+                      transition: all 0.5s ease-out;
+                    }
+                    .anim-text-1 { animation: fillText 0.5s ease-out forwards 0.2s; }
+                    .anim-text-2 { animation: fillText 0.5s ease-out forwards 0.5s; }
+                    .anim-text-3 { animation: fillText 0.5s ease-out forwards 0.7s; }
+                    .anim-text-4 { animation: fillText 0.5s ease-out forwards 1.0s; }
+                    .anim-text-5 { animation: fillText 0.5s ease-out forwards 1.2s; }
+                    
+                    @keyframes fillText {
+                      0% { color: transparent; background: rgba(255,255,255,0.03); border-color: var(--border); }
+                      50% { color: var(--fg); background: rgba(37,99,235,0.1); border-color: rgba(37,99,235,0.4); }
+                      100% { color: var(--fg); background: rgba(37,99,235,0.05); border-color: rgba(37,99,235,0.3); }
+                    }
+                  `}</style>
                 </div>
               )}
             </div>
@@ -450,7 +479,7 @@ const OnyxVsCloud = () => (
         </div>
         <div className="card-onyx">
           <span className="label"><Icons.Cpu size={14} style={{ verticalAlign: "middle", marginRight: 6 }}/> IA local · ONYX</span>
-          <h4>Whisper + Qwen 2.5 sobre Ollama</h4>
+          <h4>Infraestructura de Alta Fidelidad</h4>
           <ul>
             <li><Icons.Check size={16} style={{ color: "var(--green)", marginTop: 2, flexShrink: 0 }}/>Pago único de licencia. Cero costo por consulta.</li>
             <li><Icons.Check size={16} style={{ color: "var(--green)", marginTop: 2, flexShrink: 0 }}/>Latencia controlada en LAN. {"<"} 800 ms end-to-end.</li>
@@ -583,7 +612,7 @@ const Footer = () => (
       </div>
       <div className="legal">
         <span>© 2026 WATSON. Todos los derechos reservados.</span>
-        <span>ONYX — motor de IA local. Whisper + Qwen 2.5 sobre Ollama.</span>
+        <span>ONYX — motor de IA local de alta fidelidad.</span>
       </div>
     </div>
   </footer>
