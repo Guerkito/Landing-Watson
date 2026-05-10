@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 24px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  th { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--fg-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  td { color: var(--fg); }
+  .muted { color: var(--fg-muted); }
+  .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .hoy { color: var(--fg-muted); }
+  .watson { color: var(--blue); font-weight: 500; }
+</style>
+</head>
+<body>
+<table>
+  <thead><tr><th>Métrica</th><th>Hoy</th><th>Con WATSON</th></tr></thead>
+  <tbody>
+    <tr><td>Tiempo por historia</td><td class="mono hoy">6–8 min</td><td class="mono watson">1.5 min</td></tr>
+    <tr><td>Atención al paciente</td><td class="hoy">Dividida</td><td class="watson">100 %</td></tr>
+    <tr><td>Pacientes/médico/día</td><td class="mono hoy">25</td><td class="mono watson">30–32</td></tr>
+    <tr><td>Glosas por historia incompleta</td><td class="hoy">Frecuentes</td><td class="watson">Reducción significativa</td></tr>
+  </tbody>
+</table>
+</body>
+</html>

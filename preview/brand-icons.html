@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 32px; display: flex; gap: 36px; align-items: center; flex-wrap: wrap; color: var(--fg); }
+  .group { display: flex; align-items: center; gap: 18px; }
+  svg { stroke: currentColor; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; color: var(--fg); }
+  .label { font-family: var(--font-mono); font-size: 11px; color: var(--fg-subtle); letter-spacing: 0.04em; }
+  .blue { color: var(--blue); }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+</style>
+</head>
+<body>
+  <!-- Lucide-style strokes inline. In production: <i data-lucide="..."/> -->
+  <div class="group">
+    <svg width="28" height="28" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/></svg>
+    <span class="label">mic</span>
+  </div>
+  <div class="group blue">
+    <svg width="28" height="28" viewBox="0 0 24 24"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg>
+    <span class="label">audio-lines</span>
+  </div>
+  <div class="group green">
+    <svg width="28" height="28" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-8 8.5-4.5-1-8-3.5-8-8.5V6l8-3 8 3z"/><path d="m9 12 2 2 4-4"/></svg>
+    <span class="label">shield-check</span>
+  </div>
+  <div class="group">
+    <svg width="28" height="28" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>
+    <span class="label">cpu · onyx</span>
+  </div>
+  <div class="group">
+    <svg width="28" height="28" viewBox="0 0 24 24"><path d="M9 5h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M9 3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2H9z"/><path d="M9 11h6M9 15h6"/></svg>
+    <span class="label">clipboard</span>
+  </div>
+  <div class="group red">
+    <svg width="28" height="28" viewBox="0 0 24 24"><path d="m12 3-9 16h18z"/><path d="M12 10v4M12 17h.01"/></svg>
+    <span class="label">alert</span>
+  </div>
+</body>
+</html>

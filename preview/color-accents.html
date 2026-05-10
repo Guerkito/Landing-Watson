@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 20px; }
+  .row { display: flex; gap: 8px; align-items: stretch; }
+  .swatch { flex: 1; border-radius: var(--r-md); border: 1px solid var(--border); padding: 12px; min-height: 88px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--highlight-inset); }
+  .swatch .name { font-family: var(--font-mono); font-size: 11px; color: var(--fg); }
+  .swatch .hex { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.7); }
+  .label { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+  <div class="label">Acentos semánticos</div>
+  <div class="row">
+    <div class="swatch" style="background:#2563EB;color:#fff"><div class="name">--blue</div><div class="hex">#2563EB · primario · CTAs · datos clave</div></div>
+    <div class="swatch" style="background:#10B981;color:#062b1f"><div class="name">--green</div><div class="hex" style="color:#062b1f">#10B981 · validado · OK</div></div>
+    <div class="swatch" style="background:#EF4444;color:#fff"><div class="name">--red</div><div class="hex">#EF4444 · glosa · alerta · uso limitado</div></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 32px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.02em; border: 1px solid var(--border); color: var(--fg-muted); background: var(--bg-card); }
+  .dot { width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
+  .ok { color: var(--green); border-color: rgba(16,185,129,0.32); }
+  .warn { color: var(--red); border-color: rgba(239,68,68,0.32); }
+  .info { color: var(--blue); border-color: rgba(37,99,235,0.4); }
+  .muted { color: var(--fg-muted); }
+  .pulse { position: relative; }
+  .pulse::after { content: ''; position: absolute; inset: -2px; border-radius: 999px; border: 1px solid currentColor; opacity: 0.4; }
+</style>
+</head>
+<body>
+  <span class="badge ok"><span class="dot"></span>Validado</span>
+  <span class="badge info"><span class="dot pulse"></span>Escuchando</span>
+  <span class="badge warn"><span class="dot"></span>Glosa potencial</span>
+  <span class="badge muted">LEY 1581</span>
+  <span class="badge muted">RES. 1995/1999</span>
+  <span class="badge info">ONYX · local</span>
+  <span class="badge muted">v 2.4.1</span>
+  <span class="badge ok">100 % en red</span>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 240px; }
+  .pane { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px; gap: 18px; }
+  .pane.dark { background: #0A0A0B; color: #FAFAFA; }
+  .pane.light { background: #FAFAF9; color: #0A0A0B; }
+  .label { font-family: var(--font-mono); font-size: 10px; opacity: 0.55; letter-spacing: 0.1em; text-transform: uppercase; align-self: flex-start; }
+  .row { display: flex; align-items: center; gap: 16px; }
+  .mark { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; }
+  .wordmark { height: 28px; width: auto; }
+  /* Temporary WATSON wordmark */
+  .watson-tmp {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em;
+  }
+  .watson-tmp .badge {
+    font-family: var(--font-mono); font-weight: 500; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 7px; border-radius: 999px; border: 1px dashed currentColor; opacity: 0.6;
+  }
+  .watson-tmp svg { color: inherit; }
+</style>
+</head>
+<body>
+<div class="pane dark">
+  <span class="label">ONYX · marca oficial</span>
+  <div class="row">
+    <img class="mark" src="../assets/onyx-mark.jpg" alt="ONYX"/>
+    <img class="wordmark" src="../assets/onyx-wordmark.png" alt="ONYX"/>
+  </div>
+  <span class="label">WATSON · provisional</span>
+  <div class="watson-tmp">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
+      <path d="M5 12 Q8 7 11 12 T 17 12"/>
+      <path d="M2 12 Q6 4 10 12 T 18 12 T 22 12" opacity="0.5"/>
+    </svg>
+    WATSON
+    <span class="badge">temp</span>
+  </div>
+</div>
+<div class="pane light">
+  <span class="label">Sobre fondo claro</span>
+  <div class="row">
+    <img class="mark" src="../assets/onyx-mark.jpg" alt="ONYX"/>
+    <span style="font-family: var(--font-display); font-weight: 800; font-size: 28px; color: #ED1A2D; letter-spacing: -0.02em;">ONYX</span>
+  </div>
+  <span class="label" style="opacity:0.45">WATSON · pendiente de logo</span>
+  <div class="watson-tmp" style="color:#0A0A0B">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
+      <path d="M5 12 Q8 7 11 12 T 17 12"/>
+    </svg>
+    WATSON
+    <span class="badge">temp</span>
+  </div>
+</div>
+</body>
+</html>

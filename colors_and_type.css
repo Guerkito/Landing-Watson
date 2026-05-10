@@ -1,0 +1,292 @@
+/* ============================================================
+   WATSON Design System — Tokens
+   Import this file in any HTML you build for WATSON.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap");
+
+:root {
+  /* ---------- Base palette (raw) ---------- */
+  --black:        #0A0A0B;
+  --bone:         #FAFAF9;
+  --white:        #FFFFFF;
+
+  /* Cool-tinted neutrals — slight blue cast */
+  --neutral-50:   #F7F7F8;
+  --neutral-100:  #EFEFF1;
+  --neutral-200:  #E2E2E6;
+  --neutral-300:  #C9C9D0;
+  --neutral-400:  #A0A0AB;
+  --neutral-500:  #71717A;
+  --neutral-600:  #52525B;
+  --neutral-700:  #3F3F46;
+  --neutral-800:  #27272A;
+  --neutral-900:  #17171A;
+  --neutral-950:  #0F0F11;
+
+  /* Semantic accents */
+  --blue:         #2563EB;  /* primary CTA, key data */
+  --blue-strong:  #1D4ED8;
+  --blue-soft:    #3B82F6;
+
+  --green:        #10B981;  /* validated, OK, compliance */
+  --green-strong: #059669;
+
+  --red:          #EF4444;  /* glosas, allergies, risk — used sparingly */
+  --red-strong:   #DC2626;
+
+  /* ---------- Typefaces ---------- */
+  --font-display: "Geist", "Inter Display", ui-sans-serif, system-ui, sans-serif;
+  --font-sans:    "Geist", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---------- Type scale (display sizes are huge by design) ---------- */
+  --fs-display-1: clamp(56px, 8vw, 120px);  /* hero on landing */
+  --fs-display-2: clamp(44px, 6vw, 88px);   /* section openers */
+  --fs-display-3: clamp(36px, 4.5vw, 64px); /* sub-section */
+  --fs-h1:        clamp(32px, 3.5vw, 48px);
+  --fs-h2:        clamp(24px, 2.5vw, 32px);
+  --fs-h3:        20px;
+  --fs-body-lg:   18px;
+  --fs-body:      16px;
+  --fs-body-sm:   14px;
+  --fs-caption:   13px;
+  --fs-eyebrow:   12px;
+  --fs-stat:      clamp(48px, 6vw, 96px);
+
+  --lh-tight:     0.95;
+  --lh-display:   1.05;
+  --lh-heading:   1.2;
+  --lh-body:      1.6;
+
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.02em;
+  --tracking-body:    0;
+  --tracking-eyebrow: 0.08em;
+  --tracking-mono:    -0.01em;
+
+  /* ---------- Spacing scale (4px base) ---------- */
+  --s-1:   4px;
+  --s-2:   8px;
+  --s-3:   12px;
+  --s-4:   16px;
+  --s-6:   24px;
+  --s-8:   32px;
+  --s-12:  48px;
+  --s-16:  64px;
+  --s-24:  96px;
+  --s-32:  128px;
+  --s-48:  192px;
+
+  /* ---------- Radii ---------- */
+  --r-xs:   4px;   /* inputs */
+  --r-sm:   8px;   /* buttons, badges */
+  --r-md:   12px;  /* cards */
+  --r-lg:   16px;  /* large panels */
+  --r-xl:   24px;  /* heroes */
+  --r-full: 999px; /* chips */
+
+  /* ---------- Shadows (light mode only — dark uses inset highlights) ---------- */
+  --shadow-sm: 0 1px 2px rgba(10,10,11,0.04);
+  --shadow-md: 0 4px 12px rgba(10,10,11,0.08);
+  --shadow-lg: 0 16px 48px rgba(10,10,11,0.16);
+
+  /* ---------- Motion ---------- */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:    120ms;
+  --dur-base:    220ms;
+  --dur-slow:    600ms;
+
+  /* ---------- Layout ---------- */
+  --content-max: 1280px;
+  --gutter:      24px;
+}
+
+/* ============================================================
+   Theme: dark (default)
+   ============================================================ */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:           var(--black);
+  --bg-elevated:  #111113;
+  --bg-card:      var(--neutral-900);
+  --bg-card-hi:   #1C1C20;
+  --bg-overlay:   rgba(10,10,11,0.6);
+
+  --fg:           #FAFAFA;          /* primary text */
+  --fg-muted:     #A0A0AB;          /* secondary text */
+  --fg-subtle:    #71717A;          /* tertiary, captions */
+  --fg-disabled:  #3F3F46;
+
+  --border:       rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.16);
+  --border-focus: var(--blue);
+
+  --highlight-inset: inset 0 1px 0 rgba(255,255,255,0.06);
+
+  --shadow-sm: none;
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 24px 64px rgba(0,0,0,0.6);
+}
+
+/* ============================================================
+   Theme: light
+   ============================================================ */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg:           var(--bone);
+  --bg-elevated:  var(--white);
+  --bg-card:      var(--white);
+  --bg-card-hi:   var(--neutral-50);
+  --bg-overlay:   rgba(250,250,249,0.7);
+
+  --fg:           var(--neutral-950);
+  --fg-muted:     var(--neutral-600);
+  --fg-subtle:    var(--neutral-500);
+  --fg-disabled:  var(--neutral-300);
+
+  --border:       rgba(10,10,11,0.08);
+  --border-hover: rgba(10,10,11,0.16);
+  --border-focus: var(--blue);
+
+  --highlight-inset: none;
+}
+
+/* ============================================================
+   Element defaults — semantic mapping
+   These map raw tokens onto HTML elements so a plain document
+   already looks like WATSON.
+   ============================================================ */
+
+html {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body { margin: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--fg);
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--fs-display-2);
+  font-weight: 800;
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-display);
+}
+
+h2 {
+  font-size: var(--fs-display-3);
+  font-weight: 700;
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-display);
+}
+
+h3 {
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+h4 {
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+h5 {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+p {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-muted);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+small, .caption {
+  font-size: var(--fs-caption);
+  color: var(--fg-subtle);
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  letter-spacing: var(--tracking-mono);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+a:hover { color: var(--fg); }
+
+button {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-sm);
+  cursor: pointer;
+  border: 0;
+  background: none;
+  color: inherit;
+}
+
+::selection {
+  background: var(--blue);
+  color: var(--white);
+}
+
+/* ============================================================
+   Utility classes (lightweight; not a full framework)
+   ============================================================ */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.stat {
+  font-family: var(--font-display);
+  font-size: var(--fs-stat);
+  font-weight: 800;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  letter-spacing: var(--tracking-mono);
+}
+
+.muted { color: var(--fg-muted); }
+.subtle { color: var(--fg-subtle); }
+.text-blue { color: var(--blue); }
+.text-green { color: var(--green); }
+.text-red { color: var(--red); }

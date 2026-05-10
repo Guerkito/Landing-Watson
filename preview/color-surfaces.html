@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 0; margin: 0; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; min-height: 200px; }
+  .pane { padding: 24px; }
+  .pane.dark { background: #0A0A0B; color: #FAFAFA; }
+  .pane.light { background: #FAFAF9; color: #0A0A0B; }
+  .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; margin-bottom: 16px; }
+  .surfaces { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .surf { padding: 14px 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 11px; }
+  .pane.dark .surf { border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); }
+  .pane.light .surf { border: 1px solid rgba(10,10,11,0.08); }
+  .name { display: block; opacity: 0.55; font-size: 10px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<div class="split">
+  <div class="pane dark">
+    <div class="label">Modo oscuro · default</div>
+    <div class="surfaces">
+      <div class="surf" style="background:#0A0A0B"><span class="name">--bg</span>#0A0A0B</div>
+      <div class="surf" style="background:#111113"><span class="name">--bg-elevated</span>#111113</div>
+      <div class="surf" style="background:#17171A"><span class="name">--bg-card</span>#17171A</div>
+    </div>
+  </div>
+  <div class="pane light">
+    <div class="label">Modo claro · toggle</div>
+    <div class="surfaces">
+      <div class="surf" style="background:#FAFAF9"><span class="name">--bg</span>#FAFAF9</div>
+      <div class="surf" style="background:#FFFFFF"><span class="name">--bg-elevated</span>#FFFFFF</div>
+      <div class="surf" style="background:#F4F4F2"><span class="name">--bg-card</span>#F4F4F2</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
