@@ -48,7 +48,7 @@ export const Hero = () => {
         </p>
         <div className="ctas">
           <Button kind="primary" large href={whatsappUrl()} target="_blank">Agendar reunión <Icons.Arrow size={16}/></Button>
-          <Button kind="secondary" large href="#solucion">Ver cómo funciona</Button>
+          <Button kind="secondary" large href="#como-funciona">Ver cómo funciona</Button>
         </div>
 
         <div className="hero-visual" style={{ position: "relative", height: 600, marginTop: 80, borderRadius: 24, overflow: "hidden", border: "1px solid var(--border)", boxShadow: "0 30px 80px -20px rgba(37,99,235,0.18), 0 60px 120px -40px rgba(15,15,17,0.18)" }}>
@@ -58,6 +58,57 @@ export const Hero = () => {
             <Widget onStateChange={setDemoState} />
           </div>
         </div>
+      </div>
+    </section>
+  );
+};
+
+export const HowItWorks = () => {
+  const steps = [
+    {
+      icon: <Icons.Mic size={22}/>,
+      title: "El médico habla",
+      desc: "Conversación natural con el paciente. Sin dictar, sin pausas, sin cambiar la rutina clínica.",
+    },
+    {
+      icon: <Icons.AudioLines size={22}/>,
+      title: "WATSON escucha",
+      desc: "Captura el audio dentro de la red de la clínica. Cero conexión a internet, cero servidores externos.",
+    },
+    {
+      icon: <Icons.Cpu size={22}/>,
+      title: "ONYX estructura",
+      desc: "El motor local de IA transcribe la consulta y organiza la información clínica en tiempo real.",
+    },
+    {
+      icon: <Icons.Clipboard size={22}/>,
+      title: "Historia lista",
+      desc: "Los datos llegan al formulario de Dinámica Gerencial, ya validados y listos para guardar.",
+    },
+  ];
+  return (
+    <section className="section how-it-works" id="como-funciona">
+      <div className="container">
+        <SectionHeader
+          kicker="Cómo funciona"
+          title="Voz a historia clínica en menos de 8 segundos."
+          lede="Cuatro pasos invisibles para el médico. Cero cambio en la rutina, cero curva de aprendizaje."
+        />
+        <ol className="how-grid">
+          {steps.map((s, i) => (
+            <li className="how-card" key={i}>
+              <span className="how-step-num">{String(i + 1).padStart(2, "0")}</span>
+              <div className="how-icon">{s.icon}</div>
+              <h4>{s.title}</h4>
+              <p>{s.desc}</p>
+              {i < steps.length - 1 && (
+                <span className="how-arrow" aria-hidden="true">
+                  <Icons.Arrow size={18}/>
+                </span>
+              )}
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
@@ -255,6 +306,21 @@ export const Solution = () => {
     </section>
   );
 };
+
+export const LiveDemo = () => (
+  <section className="section live-demo" id="demo-vivo">
+    <div className="container">
+      <SectionHeader
+        kicker="Demo en vivo"
+        title="Vea cómo se llena la historia clínica mientras el médico habla."
+        lede="Lo que ocurre dentro de la red de su clínica: voz capturada localmente, ONYX estructura, y los campos de Dinámica Gerencial se completan automáticamente."
+      />
+      <div className="live-demo-frame">
+        <HeroScene contained />
+      </div>
+    </div>
+  </section>
+);
 
 export const WhyDifferent = () => {
   const items = [

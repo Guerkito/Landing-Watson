@@ -415,14 +415,19 @@ function ParticleStream({ charsRef, cycleRef, layout }) {
   );
 }
 
-function Scene({ scrollProgress, layout }) {
+function Scene({ scrollProgress, layout, contained = false }) {
   const charsRef = useRef(Array(FIELD_COUNT).fill(0));
   const cycleRef = useRef({ state: "filling", activeField: 0, timer: 0 });
   const groupRef = useRef(null);
 
   useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.position.y = (layout.orientation === "vertical" ? -1.4 : -2.0) + scrollProgress.current * -1.6;
+    if (!groupRef.current) return;
+    if (contained) {
+      groupRef.current.position.y = layout.orientation === "vertical" ? -0.4 : 0;
+      groupRef.current.scale.setScalar(1.0);
+      groupRef.current.rotation.y = Math.sin(performance.now() * 0.0002) * 0.03;
+    } else {
+      groupRef.current.position.y = (layout.orientation === "vertical" ? -1.8 : -1.0) + scrollProgress.current * -1.4;
       groupRef.current.scale.setScalar(1.0 - scrollProgress.current * 0.08);
       groupRef.current.rotation.y = Math.sin(performance.now() * 0.0002) * 0.04;
     }
@@ -437,7 +442,7 @@ function Scene({ scrollProgress, layout }) {
   );
 }
 
-export default function HeroScene() {
+export default function HeroScene({ contained = false }) {
   const wrapRef = useRef(null);
   const scrollProgress = useRef(0);
   const isMobile = useIsMobile();
@@ -446,15 +451,34 @@ export default function HeroScene() {
   useEffect(() => {
     const trigger = ScrollTrigger.create({
       trigger: wrapRef.current,
-      start: "top top",
-      end: "bottom top",
+      start: contained ? "top bottom" : "top top",
+      end: contained ? "bottom top" : "bottom top",
       scrub: true,
       onUpdate: (self) => {
         scrollProgress.current = self.progress;
       },
     });
     return () => trigger.kill();
-  }, []);
+  }, [contained]);
+
+  if (contained) {
+    return (
+      <div ref={wrapRef} className="hero-3d hero-3d--contained">
+        <Canvas
+          key={layout.orientation}
+          camera={{ position: [0, layout.cameraY, layout.cameraZ], fov: layout.cameraFov, near: 0.1, far: 100 }}
+          dpr={[1, 1.6]}
+          gl={{ antialias: true, alpha: true }}
+          style={{ background: "transparent" }}
+        >
+          <ambientLight intensity={0.85} />
+          <directionalLight position={[6, 10, 8]} intensity={0.9} />
+          <directionalLight position={[-6, 4, -4]} intensity={0.4} color="#3B82F6" />
+          <Scene scrollProgress={scrollProgress} layout={layout} contained />
+        </Canvas>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -484,7 +508,7 @@ export default function HeroScene() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(180deg, var(--bg) 0%, var(--bg) 18%, rgba(250,250,249,0.95) 35%, rgba(250,250,249,0.55) 55%, rgba(250,250,249,0.2) 80%, var(--bg) 100%)",
+            "linear-gradient(180deg, var(--bg) 0%, rgba(250,250,249,0.92) 22%, rgba(250,250,249,0.4) 50%, rgba(250,250,249,0.15) 75%, var(--bg) 100%)",
           pointerEvents: "none",
         }}
       />

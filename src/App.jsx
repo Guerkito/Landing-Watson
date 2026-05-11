@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {
-  Header, Hero, Problem, CostStats, Affected, Solution,
+  Header, Hero, HowItWorks, Problem, CostStats, Affected, Solution, LiveDemo,
   WhyDifferent, BeforeAfter, Roles, OnyxVsCloud, Pricing, FinalCTA, Footer,
 } from "./components/Sections.jsx";
 import { initLenis, destroyLenis } from "./lib/scroll.js";
@@ -57,10 +57,12 @@ export default function App() {
       <Header />
       <main>
         <Hero />
+        <HowItWorks />
         <Problem />
         <CostStats />
         <Affected />
         <Solution />
+        <LiveDemo />
         <WhyDifferent />
         <BeforeAfter />
         <Roles />
