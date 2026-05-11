@@ -697,13 +697,132 @@ body {
 .onyx-label .text strong { font-size: 13px; font-weight: 600; color: var(--fg); letter-spacing: -0.01em; }
 .onyx-label .text em { font-style: normal; font-size: 11px; color: var(--fg-muted); }
 
-/* Mobile */
+/* ============================================================
+   MOBILE / TABLET — break at 880px
+   ============================================================ */
 @media (max-width: 880px) {
-  .two-col, .why-grid, .compare-cards, .pricing, .final-cta, .footer-grid, .sticky-solution { grid-template-columns: 1fr; }
-  .stat-grid { grid-template-columns: 1fr; }
-  .affected-grid { grid-template-columns: 1fr 1fr; }
-  .roles-grid { grid-template-columns: 1fr 1fr; }
+  :root {
+    --gutter: 18px;
+  }
+
+  /* Sections breathing room */
+  .section { padding: 64px 0; }
+
+  /* Header */
+  .header-inner { height: 56px; }
   .header-nav { display: none; }
+  .header-logo svg { width: 100px; height: 20px; }
+
+  /* CTA buttons full-width */
+  .btn-lg { padding: 14px 18px; font-size: 15px; }
+  .hero .ctas { flex-direction: column; align-items: stretch; }
+  .hero .ctas .btn { justify-content: center; }
+
+  /* Hero */
+  .hero { padding: 48px 0 72px; }
+  .hero h1 { font-size: clamp(36px, 9vw, 56px); max-width: 100%; }
+  .hero .lede { font-size: 17px; margin-top: 20px; }
+
+  /* Hero 3D scene + chrome+widget mockup hidden on mobile.
+     They're optimized for desktop landscape and would overflow / lag here. */
+  .hero-3d { display: none; }
+  .hero-visual { display: none; }
+
+  /* Section title smaller */
+  .section-title { font-size: clamp(28px, 7vw, 44px); }
+  .section-lede { font-size: 16px; }
+
+  /* Grid collapses */
+  .two-col, .why-grid, .compare-cards, .pricing, .final-cta, .footer-grid, .sticky-solution {
+    grid-template-columns: 1fr;
+  }
+  .stat-grid { grid-template-columns: 1fr; gap: 16px; }
+  .affected-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .roles-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Cards padding */
+  .problem-card, .stat-card, .affected-card, .why-card, .role-card, .plan { padding: 24px; }
+  .stat-card .num { font-size: clamp(40px, 10vw, 56px); }
+
+  /* Sticky solution: collapses to normal flow */
   .sticky-text, .solution-visual { position: relative; top: auto; }
-  .sticky-solution { min-height: 0; }
+  .sticky-solution { min-height: 0; gap: 24px; }
+  .sticky-text { padding: 0; }
+  .solution-state { padding: 16px 0; }
+  .solution-state h3 { font-size: 22px; }
+  .solution-visual {
+    height: 60vh;
+    max-height: 460px;
+    perspective: none;
+  }
+  .solution-visual .sv-frame { transform: none !important; }
+
+  /* Antes y después: stack vertically instead of horizontal scroll */
+  .h-scroll-pin { height: auto; }
+  .h-scroll-sticky {
+    position: relative;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+  }
+  .h-scroll-track {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 var(--gutter);
+    transform: none !important;
+    will-change: auto;
+  }
+  .h-scroll-card {
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    min-height: 220px;
+    padding: 28px;
+  }
+  .h-scroll-card .metric { font-size: clamp(40px, 10vw, 60px); }
+  .h-scroll-intro {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+  .h-scroll-progress { display: none; }
+
+  /* ONYX vs Cloud Three.js scene: hide on mobile (cubes too cramped, animation heavy).
+     The .compare-cards below already collapses to 1 column. */
+  .onyx-vs-scene { display: none; }
+
+  /* Pricing */
+  .plan { padding: 28px; }
+  .price { font-size: 36px; }
+
+  /* Final CTA */
+  .final-cta { gap: 32px; }
+  .final-cta h3 { font-size: 26px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .full { grid-column: span 1; }
+  .form-grid .submit-row {
+    grid-column: span 1;
+    flex-direction: column;
+    gap: 14px;
+    align-items: stretch;
+  }
+  .form-grid .submit-row .btn { justify-content: center; }
+  .contact-method { padding: 12px 14px; }
+
+  /* Footer */
+  .footer { padding: 56px 0 28px; }
+  .footer-grid { gap: 28px; }
+  .legal { flex-direction: column; gap: 8px; }
+}
+
+/* ============================================================
+   SMALL PHONES — break at 480px
+   ============================================================ */
+@media (max-width: 480px) {
+  .affected-grid, .roles-grid { grid-template-columns: 1fr; }
+  .h-scroll-card { padding: 20px; }
+  .stat-card { padding: 20px; }
+  .plan { padding: 24px; }
+  .hero h1 { font-size: clamp(32px, 11vw, 44px); }
 }
