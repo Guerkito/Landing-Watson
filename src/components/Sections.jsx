@@ -5,6 +5,8 @@ import { Widget, ChromeFrame } from "./Widget.jsx";
 import HeroScene from "../scenes/HeroScene.jsx";
 import OnyxVsCloudScene from "../scenes/OnyxVsCloudScene.jsx";
 import { CONTACT, whatsappUrl, mailtoUrl } from "../lib/contact.js";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export const Header = () => (
   <header className="header">
@@ -151,26 +153,23 @@ export const Solution = () => {
     const el = wrapRef.current;
     if (!el) return;
     const visual = el.querySelector(".solution-visual");
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const r = el.getBoundingClientRect();
-        const total = el.offsetHeight - window.innerHeight;
-        const p = Math.min(1, Math.max(0, -r.top / Math.max(1, total)));
+    const trigger = ScrollTrigger.create({
+      trigger: el,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 0.4,
+      onUpdate: (self) => {
+        const p = self.progress;
         const idx = Math.min(states.length - 1, Math.floor(p * states.length * 0.999));
         setActive(idx);
         if (visual) visual.style.setProperty("--solution-progress", p.toFixed(4));
-      });
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+      },
+    });
+    return () => trigger.kill();
   }, []);
 
   return (
-    <section className="section" id="solucion" ref={wrapRef} style={{ minHeight: "260vh" }}>
+    <section className="section" id="solucion" ref={wrapRef}>
       <div className="container">
         <SectionHeader kicker="04 · La solución" title="Tres estados. Un flujo invisible." />
         <div className="sticky-solution" style={{ marginTop: 56 }}>
@@ -411,17 +410,42 @@ export const OnyxVsCloud = () => (
 export const Pricing = () => {
   const plans = [
     {
-      name: "Ala de Especialistas", scope: "Hasta 20 consultorios", price: "$48.000.000",
-      points: ["Instalación on-site en su red", "Capacitación a médicos y soporte de IT", "12 meses de soporte y actualizaciones", "Mapeo automático del HIS"],
+      name: "Ala de Especialistas",
+      scope: "Hasta 20 consultorios simultáneos",
+      price: "$48.000.000",
+      pitch: "Ideal para comenzar automatizando un área específica como Pediatría u Ortopedia. El punto de entrada perfecto para ver resultados reales antes de una adopción total.",
+      points: [
+        "Servidor local incluido + 20 micrófonos omnidireccionales",
+        "Mapeo de 1 formato de historia clínica en Dinámica Gerencial",
+        "Extensión instalada en los 20 computadores",
+        "12 meses de soporte y capacitación",
+      ],
     },
     {
-      name: "Clínica Integral", scope: "Hasta 40 consultorios", price: "$90.000.000",
+      name: "Clínica Integral",
+      scope: "Hasta 40 consultorios simultáneos",
+      price: "$90.000.000",
       recommended: true,
-      points: ["Todo lo del plan anterior", "Configuración multi-especialidad", "Auditoría de cumplimiento incluida", "Tablero de operación para IT clínico"],
+      ribbonText: "El más elegido",
+      pitch: "Para instituciones que quieren transformar todas sus consultas programadas y áreas prioritarias de una sola vez.",
+      points: [
+        "Servidor de alto rendimiento + 40 micrófonos + cableado completo",
+        "Mapeo de hasta 3 formatos en Dinámica Gerencial",
+        "Extensión instalada en los 40 computadores",
+        "12 meses de soporte y capacitación",
+      ],
     },
     {
-      name: "Red Hospitalaria 24/7", scope: "80+ consultorios", price: "$180.000.000",
-      points: ["Todo lo del plan anterior", "Clúster ONYX redundante con failover", "SLA de operación 24/7", "Onboarding por sede"],
+      name: "Red Hospitalaria 24/7",
+      scope: "Más de 80 consultorios simultáneos",
+      price: "$180.000.000",
+      pitch: "Para hospitales que operan sin parar y no pueden permitirse ninguna interrupción del sistema.",
+      points: [
+        "Clúster de 2 servidores en redundancia automática + UPS + 80 micrófonos",
+        "Integración total en todas las áreas incluyendo urgencias",
+        "Dashboard ejecutivo con métricas de automatización en tiempo real",
+        "Extensión instalada en los 80 computadores",
+      ],
     },
   ];
   return (
@@ -431,9 +455,10 @@ export const Pricing = () => {
         <div className="pricing">
           {plans.map((p) => (
             <div key={p.name} className={`plan${p.recommended ? " recommended" : ""}`}>
-              {p.recommended && <span className="ribbon">Recomendado</span>}
+              {p.recommended && <span className="ribbon">{p.ribbonText || "Recomendado"}</span>}
               <h3>{p.name}</h3>
               <p className="scope">{p.scope}</p>
+              <p className="plan-pitch">{p.pitch}</p>
               <div className="price">{p.price}<span className="cop">COP · pago único</span></div>
               <ul>
                 {p.points.map((pt) => (

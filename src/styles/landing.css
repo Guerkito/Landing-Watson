@@ -240,7 +240,7 @@ body {
   padding: 12px 18px;
 }
 .btn-secondary:hover { border-color: var(--border-hover); }
-.btn-lg { padding: 14px 22px; font-size: 16px; border-radius: 10px; }
+.btn-lg { padding: 13px 20px; font-size: 15px; border-radius: 10px; }
 
 /* Hero */
 .hero { padding: 96px 0 128px; }
@@ -312,12 +312,13 @@ body {
 .affected-card h4 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
 .affected-card p { margin-top: 10px; font-size: 14px; color: var(--fg-muted); line-height: 1.5; }
 
-/* Sticky solution */
+/* Sticky solution: 3 narrative beats pinned over ~210vh of scroll */
 .sticky-solution {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
-  min-height: 200vh;
+  min-height: 210vh;
+  align-items: start;
 }
 .sticky-text { position: sticky; top: 96px; align-self: start; padding: 64px 0; }
 .solution-state {
@@ -459,15 +460,24 @@ body {
   background: var(--blue); color: #fff; padding: 4px 10px; border-radius: 999px;
 }
 .plan h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
-.plan .scope { font-size: 13px; color: var(--fg-muted); margin-top: 6px; }
+.plan .scope { font-size: 13px; color: var(--fg-muted); margin-top: 6px; font-family: var(--font-mono); letter-spacing: -0.01em; }
+.plan .plan-pitch {
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fg-muted);
+  min-height: 4.5em;
+}
 .plan .price {
-  margin-top: 24px;
-  font-family: var(--font-display); font-weight: 800; font-size: 40px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-display); font-weight: 800; font-size: 36px;
   letter-spacing: -0.03em; color: var(--fg); line-height: 1;
 }
-.plan .price .cop { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--fg-muted); margin-left: 6px; vertical-align: middle; }
-.plan ul { list-style: none; padding: 0; margin: 28px 0; display: flex; flex-direction: column; gap: 12px; flex: 1; }
-.plan li { font-size: 14px; color: var(--fg-muted); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+.plan .price .cop { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--fg-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+.plan ul { list-style: none; padding: 0; margin: 24px 0; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.plan li { font-size: 14px; color: var(--fg-muted); display: flex; align-items: flex-start; gap: 10px; line-height: 1.45; }
 .plan li .check { color: var(--green); flex-shrink: 0; margin-top: 2px; }
 
 /* Final CTA */
@@ -698,64 +708,133 @@ body {
 .onyx-label .text em { font-style: normal; font-size: 11px; color: var(--fg-muted); }
 
 /* ============================================================
-   MOBILE / TABLET — break at 880px
+   TABLET — 768px to 1100px (iPad portrait + landscape)
+   Keeps 2-up grids where possible to enable comparison.
    ============================================================ */
-@media (max-width: 880px) {
+@media (min-width: 768px) and (max-width: 1100px) {
+  :root { --gutter: 32px; }
+
+  .section { padding: 96px 0; }
+
+  /* Header still full */
+  .header-nav { gap: 20px; font-size: 13px; }
+
+  /* Hero */
+  .hero { padding: 80px 0 96px; }
+  .hero h1 { font-size: clamp(44px, 6vw, 72px); }
+  .hero-visual { height: 480px; }
+
+  /* Sticky solution: keep sticky, narrower text col */
+  .sticky-solution { grid-template-columns: 1fr 1.2fr; gap: 40px; }
+  .solution-visual { height: 70vh; max-height: 540px; }
+
+  /* Two-col, why, compare cards stay 2-up — that's the point */
+  .why-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .stat-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .affected-grid { grid-template-columns: 1fr 1fr; }
+  .roles-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Pricing 3-up shrinks; or stack with prominent middle */
+  .pricing { grid-template-columns: 1fr; gap: 18px; max-width: 640px; margin-left: auto; margin-right: auto; }
+  .plan { padding: 32px; }
+
+  /* Final CTA stays 2-up but inner form collapses for breathing room */
+  .final-cta { padding: 48px; gap: 40px; }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid .submit-row { flex-direction: column; gap: 12px; align-items: stretch; }
+  .form-grid .submit-row .btn { justify-content: center; }
+
+  /* OnyxVsCloud scene on tablet — keep cubes side by side */
+  .onyx-vs-scene { height: 460px; }
+
+  /* H-scroll keep horizontal but adjust card sizes */
+  .h-scroll-card { flex: 0 0 min(440px, 70vw); }
+}
+
+/* ============================================================
+   MOBILE — break at 768px
+   ============================================================ */
+@media (max-width: 767px) {
   :root {
-    --gutter: 18px;
+    --gutter: 20px;
   }
 
   /* Sections breathing room */
-  .section { padding: 64px 0; }
+  .section { padding: 72px 0; }
 
   /* Header */
   .header-inner { height: 56px; }
   .header-nav { display: none; }
   .header-logo svg { width: 100px; height: 20px; }
 
-  /* CTA buttons full-width */
-  .btn-lg { padding: 14px 18px; font-size: 15px; }
+  /* Smaller buttons globally on mobile */
+  .btn { padding: 10px 14px; font-size: 13px; }
+  .btn-lg { padding: 12px 16px; font-size: 14px; }
+  .header .btn-primary { padding: 8px 14px; font-size: 12px; }
+
+  /* CTA buttons full-width on mobile */
   .hero .ctas { flex-direction: column; align-items: stretch; }
   .hero .ctas .btn { justify-content: center; }
 
   /* Hero */
   .hero { padding: 48px 0 72px; }
-  .hero h1 { font-size: clamp(36px, 9vw, 56px); max-width: 100%; }
+  .hero h1 { font-size: clamp(34px, 8vw, 52px); max-width: 100%; }
   .hero .lede { font-size: 17px; margin-top: 20px; }
 
-  /* Hero 3D: re-laid-out vertically by HeroScene's mobile layout */
+  /* Hero ChromeFrame mockup hidden, but the 3D scene stays (vertical layout) */
   .hero-visual { display: none; }
 
   /* Section title smaller */
-  .section-title { font-size: clamp(28px, 7vw, 44px); }
+  .section-title { font-size: clamp(28px, 7vw, 40px); }
   .section-lede { font-size: 16px; }
 
   /* Grid collapses */
-  .two-col, .why-grid, .compare-cards, .pricing, .final-cta, .footer-grid, .sticky-solution {
+  .two-col, .why-grid, .pricing, .footer-grid, .sticky-solution {
     grid-template-columns: 1fr;
   }
   .stat-grid { grid-template-columns: 1fr; gap: 16px; }
   .affected-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
   .roles-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
 
+  /* Comparative cards: STAY 2-up so user can compare side-by-side.
+     They're meant to be read together. */
+  .compare-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .compare-cards .card-cloud,
+  .compare-cards .card-onyx { padding: 20px 16px; }
+  .compare-cards h4 { font-size: 16px; }
+  .compare-cards li { font-size: 12px; }
+  .compare-cards .savings .v { font-size: 28px; }
+  .compare-cards .savings .l { font-size: 11px; }
+
+  /* Final CTA stacks but keeps box layout clean */
+  .final-cta {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+    gap: 32px;
+    margin-top: 32px;
+  }
+
   /* Cards padding */
   .problem-card, .stat-card, .affected-card, .why-card, .role-card, .plan { padding: 24px; }
   .stat-card .num { font-size: clamp(40px, 10vw, 56px); }
 
-  /* Sticky solution: collapses to normal flow */
+  /* Sticky solution: stack normally on mobile (touch can't smooth-pin reliably) */
   .sticky-text, .solution-visual { position: relative; top: auto; }
   .sticky-solution { min-height: 0; gap: 24px; }
   .sticky-text { padding: 0; }
   .solution-state { padding: 16px 0; }
   .solution-state h3 { font-size: 22px; }
   .solution-visual {
-    height: 60vh;
-    max-height: 460px;
+    height: 56vh;
+    max-height: 420px;
     perspective: none;
   }
   .solution-visual .sv-frame { transform: none !important; }
 
-  /* Antes y después: stack vertically instead of horizontal scroll */
+  /* Antes y después: vertical stack on mobile */
   .h-scroll-pin { height: auto; }
   .h-scroll-sticky {
     position: relative;
@@ -786,7 +865,7 @@ body {
   }
   .h-scroll-progress { display: none; }
 
-  /* ONYX vs Cloud: cubes stacked vertically on mobile, overlays adjust */
+  /* ONYX vs Cloud 3D scene: cubes stacked vertically */
   .onyx-vs-scene { height: 620px; }
   .onyx-vs-scene--mobile .onyx-overlays {
     grid-template-columns: 1fr;
@@ -801,21 +880,19 @@ body {
   .onyx-vs-scene--mobile .onyx-side--ok { align-items: flex-start; }
   .onyx-vs-scene--mobile .onyx-side--bad { align-items: flex-end; flex-direction: row-reverse; }
   .onyx-vs-scene--mobile .legal-stamp { align-self: flex-start; }
-  .onyx-vs-scene--mobile .legal-stamp__title { font-size: 16px; }
+  .onyx-vs-scene--mobile .legal-stamp__title { font-size: 14px; }
   .onyx-vs-scene--mobile .legal-stamp__law { font-size: 8px; }
-  .onyx-vs-scene--mobile .onyx-label { padding: 8px 10px; }
-  .onyx-vs-scene--mobile .onyx-label .text strong { font-size: 12px; }
-  .onyx-vs-scene--mobile .onyx-label .text em { font-size: 10px; }
-  .onyx-vs-scene--mobile .onyx-label--ok { align-self: flex-end; }
-  .onyx-vs-scene--mobile .onyx-label--bad { align-self: flex-end; }
+  .onyx-vs-scene--mobile .legal-stamp { padding: 6px 10px; }
+  .onyx-vs-scene--mobile .onyx-label { padding: 7px 9px; }
+  .onyx-vs-scene--mobile .onyx-label .text strong { font-size: 11px; }
+  .onyx-vs-scene--mobile .onyx-label .text em { font-size: 9px; }
 
-  /* Pricing */
-  .plan { padding: 28px; }
-  .price { font-size: 36px; }
+  /* Pricing pitch text */
+  .plan .plan-pitch { min-height: 0; }
+  .plan h3 { font-size: 20px; }
+  .plan .price { font-size: 30px; }
 
-  /* Final CTA */
-  .final-cta { gap: 32px; }
-  .final-cta h3 { font-size: 26px; }
+  /* Form grid */
   .form-grid { grid-template-columns: 1fr; }
   .form-grid .full { grid-column: span 1; }
   .form-grid .submit-row {
@@ -841,5 +918,8 @@ body {
   .h-scroll-card { padding: 20px; }
   .stat-card { padding: 20px; }
   .plan { padding: 24px; }
-  .hero h1 { font-size: clamp(32px, 11vw, 44px); }
+  .hero h1 { font-size: clamp(30px, 10vw, 42px); }
+
+  /* Compare cards collapse only on very small screens */
+  .compare-cards { grid-template-columns: 1fr; gap: 14px; }
 }

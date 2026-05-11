@@ -422,7 +422,7 @@ function Scene({ scrollProgress, layout }) {
 
   useFrame(() => {
     if (groupRef.current) {
-      groupRef.current.position.y = (layout.orientation === "vertical" ? -0.4 : -1.0) + scrollProgress.current * -1.4;
+      groupRef.current.position.y = (layout.orientation === "vertical" ? -1.4 : -2.0) + scrollProgress.current * -1.6;
       groupRef.current.scale.setScalar(1.0 - scrollProgress.current * 0.08);
       groupRef.current.rotation.y = Math.sin(performance.now() * 0.0002) * 0.04;
     }
@@ -484,7 +484,7 @@ export default function HeroScene() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(180deg, var(--bg) 0%, rgba(250,250,249,0.92) 22%, rgba(250,250,249,0.4) 50%, rgba(250,250,249,0.15) 75%, var(--bg) 100%)",
+            "linear-gradient(180deg, var(--bg) 0%, var(--bg) 18%, rgba(250,250,249,0.95) 35%, rgba(250,250,249,0.55) 55%, rgba(250,250,249,0.2) 80%, var(--bg) 100%)",
           pointerEvents: "none",
         }}
       />
