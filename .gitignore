@@ -12,3 +12,8 @@ Thumbs.db
 # Project specific
 uploads/
 preview/
+
+# Vite / Node
+node_modules/
+dist/
+.vite/
