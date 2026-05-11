@@ -2,6 +2,7 @@ import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import useIsMobile from "../lib/useIsMobile.js";
 
 const PARTICLE_COUNT = 160;
 const CUBE_SIZE = 2.2;
@@ -147,17 +148,18 @@ function OpenCubeFaces({ color, opacity }) {
   );
 }
 
-function ClinicCube({ scrollProgress }) {
+function ClinicCube({ scrollProgress, position }) {
   const groupRef = useRef(null);
   useFrame(() => {
     if (groupRef.current) {
       groupRef.current.rotation.y += 0.003;
       groupRef.current.rotation.x = Math.sin(performance.now() * 0.0004) * 0.08;
-      groupRef.current.position.y = Math.sin(performance.now() * 0.0006) * 0.08;
+      const bob = Math.sin(performance.now() * 0.0006) * 0.08;
+      groupRef.current.position.y = position[1] + bob;
     }
   });
   return (
-    <group ref={groupRef} position={[-2.2, 0, 0]}>
+    <group ref={groupRef} position={position}>
       <SealedCube color="#10B981" opacity={0.05} />
       <CubeFrame color="#10B981" opacity={0.95} />
       <ContainedParticles color="#10B981" scrollProgress={scrollProgress} />
@@ -165,17 +167,18 @@ function ClinicCube({ scrollProgress }) {
   );
 }
 
-function CloudCube({ scrollProgress }) {
+function CloudCube({ scrollProgress, position }) {
   const groupRef = useRef(null);
   useFrame(() => {
     if (groupRef.current) {
       groupRef.current.rotation.y -= 0.003;
       groupRef.current.rotation.x = Math.cos(performance.now() * 0.0004) * 0.08;
-      groupRef.current.position.y = Math.cos(performance.now() * 0.0006) * 0.08;
+      const bob = Math.cos(performance.now() * 0.0006) * 0.08;
+      groupRef.current.position.y = position[1] + bob;
     }
   });
   return (
-    <group ref={groupRef} position={[2.2, 0, 0]}>
+    <group ref={groupRef} position={position}>
       <OpenCubeFaces color="#EF4444" opacity={0.05} />
       <CubeFrame color="#EF4444" opacity={0.85} />
       <ContainedParticles color="#EF4444" escape scrollProgress={scrollProgress} />
@@ -186,6 +189,14 @@ function CloudCube({ scrollProgress }) {
 export default function OnyxVsCloudScene() {
   const wrapRef = useRef(null);
   const scrollProgress = useRef(0);
+  const isMobile = useIsMobile();
+
+  // Mobile: cubes stacked vertically
+  // Desktop: cubes side by side
+  const clinicPos = isMobile ? [0, 1.6, 0] : [-2.2, 0, 0];
+  const cloudPos  = isMobile ? [0, -1.6, 0] : [2.2, 0, 0];
+  const cameraZ   = isMobile ? 7.4 : 7;
+  const cameraFov = isMobile ? 46 : 38;
 
   useEffect(() => {
     const trigger = ScrollTrigger.create({
@@ -204,9 +215,10 @@ export default function OnyxVsCloudScene() {
   }, []);
 
   return (
-    <div ref={wrapRef} className="onyx-vs-scene">
+    <div ref={wrapRef} className={`onyx-vs-scene${isMobile ? " onyx-vs-scene--mobile" : ""}`}>
       <Canvas
-        camera={{ position: [0, 0.6, 7], fov: 38 }}
+        key={isMobile ? "m" : "d"}
+        camera={{ position: [0, 0.6, cameraZ], fov: cameraFov }}
         dpr={[1, 1.6]}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
@@ -214,8 +226,8 @@ export default function OnyxVsCloudScene() {
         <ambientLight intensity={0.7} />
         <directionalLight position={[3, 5, 4]} intensity={1.0} />
         <directionalLight position={[-4, 2, -3]} intensity={0.45} color="#3B82F6" />
-        <ClinicCube scrollProgress={scrollProgress} />
-        <CloudCube scrollProgress={scrollProgress} />
+        <ClinicCube scrollProgress={scrollProgress} position={clinicPos} />
+        <CloudCube scrollProgress={scrollProgress} position={cloudPos} />
       </Canvas>
 
       <div className="onyx-overlays">

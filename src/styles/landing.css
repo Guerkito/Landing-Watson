@@ -723,9 +723,7 @@ body {
   .hero h1 { font-size: clamp(36px, 9vw, 56px); max-width: 100%; }
   .hero .lede { font-size: 17px; margin-top: 20px; }
 
-  /* Hero 3D scene + chrome+widget mockup hidden on mobile.
-     They're optimized for desktop landscape and would overflow / lag here. */
-  .hero-3d { display: none; }
+  /* Hero 3D: re-laid-out vertically by HeroScene's mobile layout */
   .hero-visual { display: none; }
 
   /* Section title smaller */
@@ -788,9 +786,28 @@ body {
   }
   .h-scroll-progress { display: none; }
 
-  /* ONYX vs Cloud Three.js scene: hide on mobile (cubes too cramped, animation heavy).
-     The .compare-cards below already collapses to 1 column. */
-  .onyx-vs-scene { display: none; }
+  /* ONYX vs Cloud: cubes stacked vertically on mobile, overlays adjust */
+  .onyx-vs-scene { height: 620px; }
+  .onyx-vs-scene--mobile .onyx-overlays {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .onyx-vs-scene--mobile .onyx-side {
+    padding: 14px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .onyx-vs-scene--mobile .onyx-side--ok { align-items: flex-start; }
+  .onyx-vs-scene--mobile .onyx-side--bad { align-items: flex-end; flex-direction: row-reverse; }
+  .onyx-vs-scene--mobile .legal-stamp { align-self: flex-start; }
+  .onyx-vs-scene--mobile .legal-stamp__title { font-size: 16px; }
+  .onyx-vs-scene--mobile .legal-stamp__law { font-size: 8px; }
+  .onyx-vs-scene--mobile .onyx-label { padding: 8px 10px; }
+  .onyx-vs-scene--mobile .onyx-label .text strong { font-size: 12px; }
+  .onyx-vs-scene--mobile .onyx-label .text em { font-size: 10px; }
+  .onyx-vs-scene--mobile .onyx-label--ok { align-self: flex-end; }
+  .onyx-vs-scene--mobile .onyx-label--bad { align-self: flex-end; }
 
   /* Pricing */
   .plan { padding: 28px; }
