@@ -12,14 +12,7 @@ export const Header = () => (
   <header className="header">
     <div className="container header-inner">
       <a className="header-logo" href="#top" aria-label="WATSON">
-        <svg width="120" height="24" viewBox="0 0 240 48" fill="none">
-          <g transform="translate(8 24)" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none">
-            <circle cx="0" cy="0" r="3" fill="currentColor" stroke="none"/>
-            <path d="M-9 0 Q-6 -4 -3 0 T 3 0 T 9 0"/>
-            <path d="M-14 0 Q-10 -7 -6 0 T 6 0 T 14 0" opacity="0.55"/>
-          </g>
-          <text x="40" y="32" fontFamily="Geist, Inter, sans-serif" fontWeight="800" fontSize="22" letterSpacing="-0.02em" fill="currentColor">WATSON</text>
-        </svg>
+        <img src="/assets/onyx-wordmark.png" alt="WATSON" style={{ height: "32px", width: "auto", display: "block" }} />
       </a>
       <nav className="header-nav">
         <a href="#solucion">La solución</a>
@@ -630,13 +623,7 @@ export const Footer = () => (
       <div className="footer-grid">
         <div>
           <a className="header-logo" href="#top">
-            <svg width="120" height="24" viewBox="0 0 240 48" fill="none">
-              <g transform="translate(8 24)" stroke="currentColor" strokeWidth="1.5" fill="none">
-                <circle cx="0" cy="0" r="3" fill="currentColor" stroke="none"/>
-                <path d="M-9 0 Q-6 -4 -3 0 T 3 0 T 9 0"/>
-              </g>
-              <text x="40" y="32" fontFamily="Geist, Inter, sans-serif" fontWeight="800" fontSize="22" letterSpacing="-0.02em" fill="currentColor">WATSON</text>
-            </svg>
+            <img src="/assets/onyx-wordmark.png" alt="WATSON" style={{ height: "32px", width: "auto", display: "block", filter: "brightness(0) invert(1)" }} />
           </a>
           <p style={{ marginTop: 16, fontSize: 14, maxWidth: 36 + "ch", color: "var(--fg-muted)" }}>
             Inteligencia clínica local. Construido en Colombia para clínicas y hospitales de Colombia.

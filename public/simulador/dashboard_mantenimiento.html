@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>WATSON - Súper Consola de Mantenimiento Pro</title>
+    <style>
+        :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --text-dim: #8b949e; --primary: #58a6ff; --success: #238636; --danger: #da3633; --warning: #d29922; --accent: #d2a8ff; }
+        body { font-family: 'Segoe UI', 'SF Mono', monospace; background: var(--bg); color: var(--text); margin: 0; padding: 8px; display: flex; flex-direction: column; height: 100vh; overflow: hidden; box-sizing: border-box; }
+        
+        /* Login Overlay */
+        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; align-items: center; justify-content: center; }
+        .login-card { background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid var(--border); width: 350px; text-align: center; }
+        .login-input { background: #0d1117; border: 1px solid var(--border); color: white; padding: 12px; width: 100%; border-radius: 6px; margin-bottom: 20px; box-sizing: border-box; font-size: 16px; outline: none; }
+        .login-input:focus { border-color: var(--primary); }
+
+        /* Dashboard Layout */
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 8px; flex-shrink: 0; }
+        .logo-group { display: flex; align-items: center; gap: 10px; }
+        .sys-info { display: flex; gap: 12px; font-size: 9px; color: var(--text-dim); }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 8px; flex-shrink: 0; }
+        .kpi-card { background: var(--card); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); }
+        .kpi-card h3 { margin: 0 0 4px 0; font-size: 8px; text-transform: uppercase; color: var(--text-dim); letter-spacing: 0.5px; }
+        .kpi-card .value { font-size: 18px; font-weight: 800; display: flex; align-items: baseline; gap: 2px; line-height: 1.2; }
+        .kpi-card .unit { font-size: 9px; color: var(--text-dim); }
+
+        .main-layout { display: grid; grid-template-columns: 260px 1fr 300px; gap: 8px; flex: 1; min-height: 0; }
+        .col { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+        
+        .box { background: var(--card); border: 1px solid var(--border); border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+        .box-header { padding: 4px 10px; border-bottom: 1px solid var(--border); background: #21262d; font-size: 9px; text-transform: uppercase; font-weight: 800; color: var(--text-dim); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .box-content { padding: 8px; overflow-y: auto; flex: 1; }
+
+        /* Secciones Pro */
+        .pro-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #30363d33; font-size: 10px; }
+        .pro-label { color: var(--text-dim); }
+        .pro-val { font-weight: 700; color: var(--primary); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 10px; }
+        th { background: #21262d; padding: 4px 6px; text-align: left; color: var(--text-dim); position: sticky; top: 0; }
+        td { padding: 4px 6px; border-bottom: 1px solid #30363d33; }
+        tr:hover { background: #1f2937; cursor: pointer; }
+        tr.active { background: #23863622; border-left: 2px solid var(--success); }
+
+        .inspector { background: #010409; font-family: 'SF Mono', monospace; font-size: 10px; color: #a5d6ff; height: 100%; overflow-y: auto; padding: 8px; }
+        .log-display { background: black; color: #d1d1d1; font-size: 9px; padding: 8px; height: 100%; overflow-y: auto; font-family: monospace; }
+        
+        .btn { background: var(--primary); color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+        .btn:hover { opacity: 0.8; }
+        .btn-danger { background: var(--danger); }
+        .btn-warning { background: var(--warning); color: black; }
+
+        .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+        .dot-ok { background: var(--success); box-shadow: 0 0 5px var(--success); }
+        .dot-err { background: var(--danger); box-shadow: 0 0 5px var(--danger); }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        
+        /* Pills para estados */
+        .pill { padding: 1px 5px; border-radius: 4px; font-size: 8px; font-weight: 800; text-transform: uppercase; }
+        .pill-completed { background: var(--success); color: white; }
+        .pill-failed { background: var(--danger); color: white; }
+        .pill-processing { background: var(--warning); color: black; }
+        .pill-queued { background: var(--text-dim); color: white; }
+
+        .log-line { margin-bottom: 2px; line-height: 1.2; border-bottom: 1px solid #111; padding-bottom: 2px; }
+        pre { margin: 0; white-space: pre-wrap; word-break: break-all; }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-card">
+            <h2 style="color: var(--primary); margin-bottom: 30px;">WATSON ADMIN</h2>
+            <input type="password" id="admin-pass" class="login-input" placeholder="Contraseña de Mantenimiento" onkeydown="if(event.key==='Enter') login()">
+            <button onclick="login()" class="btn" style="width: 100%; padding: 12px; font-size: 14px;">ACCEDER AL NÚCLEO</button>
+            <div id="login-err" style="color: var(--danger); font-size: 12px; margin-top: 15px; display: none;">Contraseña incorrecta</div>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="logo-group">
+            <div class="logo-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </div>
+            <div>
+                <h1 style="margin:0; font-size: 16px; font-weight: 800; color: var(--primary);">ENGINEERING COMMAND CENTER</h1>
+                <div class="sys-info">
+                    <span id="sys-uptime">UPTIME: --</span>
+                    <span id="sys-node">NODE: --</span>
+                    <span id="sys-db">DB: --</span>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button onclick="emergencyPurge()" class="btn btn-warning">LIMPIAR PHI</button>
+            <button onclick="resetDB()" class="btn btn-danger">RESET DB</button>
+            <button onclick="updateAll()" class="btn">REFRESCAR</button>
+        </div>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="kpi-card"><h3>Consultas</h3><div class="value" id="kpi-total">0</div></div>
+        <div class="kpi-card"><h3>Éxito</h3><div class="value"><span id="kpi-success">0</span><span class="unit">%</span></div></div>
+        <div class="kpi-card"><h3>Audio</h3><div class="value"><span id="kpi-audio">0</span><span class="unit">m</span></div></div>
+        <div class="kpi-card"><h3>Latencia</h3><div class="value"><span id="kpi-p95">0</span><span class="unit">s</span></div></div>
+        <div class="kpi-card"><h3>Carga CPU</h3><div class="value" id="kpi-cpu">0.0</div></div>
+        <div class="kpi-card"><h3>RAM</h3><div class="value" id="kpi-ram">0<span class="unit">MB</span></div></div>
+    </div>
+
+    <div class="main-layout">
+        <!-- Columna 1: Infraestructura & PHI -->
+        <div class="col">
+            <div class="box" style="flex: 0 0 130px;">
+                <div class="box-header">Salud de Infraestructura</div>
+                <div class="box-content">
+                    <div class="pro-item"><span><div id="dot-v" class="dot"></div> Motor Voz</span><span class="pro-val" id="txt-v">--</span></div>
+                    <div class="pro-item"><span><div id="dot-c" class="dot"></div> Motor Clínico</span><span class="pro-val" id="txt-c">--</span></div>
+                    <div class="pro-item"><span><div class="dot dot-ok"></div> Storage</span><span class="pro-val" style="color:var(--success)">OK</span></div>
+                </div>
+            </div>
+            <div class="box" style="flex: 0 0 160px;">
+                <div class="box-header">Gestión de PHI & Purga</div>
+                <div class="box-content">
+                    <div class="pro-item"><span class="pro-label">Espacio en Disco</span><span class="pro-val" id="phi-size">0 MB</span></div>
+                    <div class="pro-item"><span class="pro-label">Archivos Audio</span><span class="pro-val" id="phi-count">0</span></div>
+                    <div class="pro-item"><span class="pro-label">Sig. Purga Auto</span><span class="pro-val" id="phi-next" style="color:var(--warning)">-- min</span></div>
+                    <div style="font-size:8px; color:var(--text-dim); margin-top:8px; font-style: italic;">* Los audios se eliminan cada 24h.</div>
+                </div>
+            </div>
+            <div class="box" style="flex: 1;">
+                <div class="box-header">Historial Operativo</div>
+                <div class="box-content" style="padding:0;">
+                    <table id="jobs-table">
+                        <thead><tr><th>ID</th><th>ST</th><th>T</th></tr></thead>
+                        <tbody id="jobs-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna 2: Telemetría Cerebro & Inspector -->
+        <div class="col">
+            <div class="box" style="flex: 0 0 130px;">
+                <div class="box-header">Telemetría del "Cerebro" (IA Config)</div>
+                <div class="box-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <div class="pro-item"><span class="pro-label">Modelo</span><span class="pro-val" id="ia-model">--</span></div>
+                        <div class="pro-item"><span class="pro-label">Hilos CPU</span><span class="pro-val" id="ia-threads">--</span></div>
+                    </div>
+                    <div>
+                        <div class="pro-item"><span class="pro-label">Temp IA</span><span class="pro-val">0.1</span></div>
+                        <div class="pro-item"><span class="pro-label">Internal Ping</span><span class="pro-val" id="ia-ping">--</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="box" style="flex: 1;">
+                <div class="box-header">Inspector de Carga Útil (Deep Inspection)</div>
+                <div class="box-content" style="padding:0;">
+                    <div class="inspector" id="inspector">
+                        <div style="text-align:center; margin-top:100px; color:var(--text-dim); font-size:9px;">Seleccione un proceso para inspección</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna 3: Diccionario & Logs -->
+        <div class="col">
+            <div class="box" style="flex: 0 0 130px;">
+                <div class="box-header">Inteligencia de Diccionario (CIE-10)</div>
+                <div class="box-content">
+                    <div class="pro-item"><span class="pro-label">Códigos Cargados</span><span class="pro-val" id="db-cie-keys">--</span></div>
+                    <div class="pro-item"><span class="pro-label">Tasa de Hallazgo</span><span class="pro-val" id="db-cie-rate">--%</span></div>
+                    <div style="font-size:8px; color:var(--text-dim); margin-top:8px;">Versión: 2026.1 Local</div>
+                </div>
+            </div>
+            <div class="box" style="flex: 1;">
+                <div class="box-header">System Live Terminal</div>
+                <div class="box-content" style="padding:0;">
+                    <div class="log-display" id="log-display"></div>
+                </div>
+            </div>
+            <div class="box" style="flex: 0 0 100px; border-color: #da363355;">
+                <div class="box-header" style="color:var(--danger)">Alertas Técnicas</div>
+                <div class="box-content" style="padding:0;" id="error-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let adminToken = localStorage.getItem('watson_admin_token');
+        let selectedId = null;
+        let isUpdating = false;
+
+        async function login() {
+            const pass = document.getElementById('admin-pass').value;
+            const res = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: pass })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                adminToken = data.token;
+                localStorage.setItem('watson_admin_token', adminToken);
+                document.getElementById('login-overlay').style.display = 'none';
+                updateAll();
+                setInterval(updateAll, 3000);
+            } else {
+                document.getElementById('login-err').style.display = 'block';
+            }
+        }
+
+        if (adminToken) {
+            document.getElementById('login-overlay').style.display = 'none';
+            updateAll();
+            setInterval(updateAll, 3000);
+        }
+
+        async function updateAll() {
+            if (!adminToken || isUpdating) return;
+            isUpdating = true;
+            const headers = { 'Authorization': `Bearer ${adminToken}` };
+            try {
+                // 1. Stats Básicos
+                const sRes = await fetch('/api/stats');
+                const s = await sRes.json();
+                document.getElementById('kpi-total').innerText = s.total_jobs;
+                document.getElementById('kpi-success').innerText = s.success_rate;
+                document.getElementById('kpi-audio').innerText = s.total_audio_minutes;
+                document.getElementById('kpi-p95').innerText = s.total_latency.p95;
+                document.getElementById('kpi-cpu').innerText = s.system_load;
+                document.getElementById('kpi-ram').innerText = s.memory_usage.replace('MB','');
+
+                // 2. Salud & Uptime
+                const hRes = await fetch('/api/health/ready');
+                const h = await hRes.json();
+                const setH = (id, dotId, status) => {
+                    document.getElementById(id).innerText = status.toUpperCase();
+                    document.getElementById(dotId).className = 'dot ' + (status === 'ok' ? 'dot-ok' : 'dot-err');
+                };
+                setH('txt-v', 'dot-v', h.checks.vocal_engine);
+                setH('txt-c', 'dot-c', h.checks.clinical_engine);
+                document.getElementById('sys-uptime').innerText = `UPTIME: ${Math.floor(h.uptime/3600)}h ${Math.floor((h.uptime%3600)/60)}m`;
+
+                // 3. Stats Pro (Protegido)
+                const spRes = await fetch('/api/admin/stats-pro', { headers });
+                if (spRes.status === 401) { location.reload(); return; }
+                const sp = await spRes.json();
+                
+                document.getElementById('phi-size').innerText = sp.phi.uploads_size_mb + " MB";
+                document.getElementById('phi-count').innerText = sp.phi.audio_count;
+                document.getElementById('phi-next').innerText = sp.phi.next_purge_min + " min";
+                
+                document.getElementById('ia-model').innerText = sp.ai_config.model;
+                document.getElementById('ia-threads').innerText = sp.ai_config.threads;
+                document.getElementById('ia-ping').innerText = sp.ai_config.internal_latency;
+
+                document.getElementById('db-cie-keys').innerText = sp.clinical_db.cie10_keys;
+                document.getElementById('db-cie-rate').innerText = sp.clinical_db.hit_rate + "%";
+
+                // 4. System Info
+                const dRes = await fetch('/api/debug/system');
+                const d = await dRes.json();
+                document.getElementById('sys-node').innerText = `NODE: ${d.node_version}`;
+                document.getElementById('sys-db').innerText = `DB: ${d.db_size}`;
+
+                // 5. Jobs & Logs
+                const jRes = await fetch('/api/debug/jobs');
+                const jobs = await jRes.json();
+                const jBody = document.getElementById('jobs-body');
+                jBody.innerHTML = jobs.map(j => `
+                    <tr class="${selectedId === j.id ? 'active' : ''}" onclick="inspectJob('${j.id}')">
+                        <td style="font-family:monospace; color:var(--primary)">${j.id.substring(4,12)}..</td>
+                        <td><span class="pill pill-${j.status}">${j.status[0]}</span></td>
+                        <td>${(j.duration_total/1000).toFixed(1)}s</td>
+                    </tr>
+                `).join("");
+                window.jobsCache = jobs;
+
+                const lRes = await fetch('/api/debug/logs-live');
+                const lData = await lRes.json();
+                const logDisplay = document.getElementById('log-display');
+                logDisplay.innerHTML = lData.logs.map(line => `<div class="log-line">${line}</div>`).join("");
+                logDisplay.scrollTop = logDisplay.scrollHeight;
+
+            } catch (e) { 
+                console.error(e); 
+            } finally {
+                isUpdating = false;
+            }
+        }
+
+        function inspectJob(id) {
+            selectedId = id;
+            const j = window.jobsCache.find(x => x.id === id);
+            const container = document.getElementById('inspector');
+            let resPretty = "";
+            try { resPretty = JSON.stringify(JSON.parse(j.result), null, 2); } catch(e) { resPretty = "NO DATA"; }
+            container.innerHTML = `
+                <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom:8px; display:flex; justify-content:space-between;">
+                    <span>[ INSPECTOR: ${j.id.substring(0,18)}... ]</span>
+                    <span style="color:var(--text-dim)">${new Date().toLocaleTimeString()}</span>
+                </div>
+                
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:10px;">
+                    <div style="border:1px solid var(--border); padding:6px; background:#0d1117; border-radius:4px;">
+                        <div style="color:var(--text-dim); font-size:8px; margin-bottom:2px; text-transform:uppercase;">Motor Voz</div>
+                        <div style="font-size:12px; font-weight:800; color:var(--primary);">${(j.duration_whisper/1000).toFixed(2)}s</div>
+                    </div>
+                    <div style="border:1px solid var(--border); padding:6px; background:#0d1117; border-radius:4px;">
+                        <div style="color:var(--text-dim); font-size:8px; margin-bottom:2px; text-transform:uppercase;">Motor Clínico</div>
+                        <div style="font-size:12px; font-weight:800; color:var(--success);">${(j.duration_ollama/1000).toFixed(2)}s</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <div style="font-size:8px; text-transform:uppercase; color:var(--warning); font-weight:800; margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+                        <div style="width:4px; height:4px; background:var(--warning); border-radius:50%;"></div> Transcripción (Whisper)
+                    </div>
+                    <div style="background:#0d1117; padding:8px; border-radius:4px; border:1px solid #30363d; font-size:11px; line-height:1.3; color:#e6edf3; max-height:120px; overflow-y:auto;">${j.transcription || "No disponible"}</div>
+                </div>
+
+                <div>
+                    <div style="font-size:8px; text-transform:uppercase; color:var(--success); font-weight:800; margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+                        <div style="width:4px; height:4px; background:var(--success); border-radius:50%;"></div> Resultado Extracción (JSON)
+                    </div>
+                    <pre style="background:#0d1117; padding:8px; border-radius:4px; border:1px solid #30363d; font-size:10px; margin:0; max-height:220px; overflow-y:auto; color:#d2a8ff;">${resPretty}</pre>
+                </div>
+
+                ${j.error ? `<div style="color:var(--danger); margin-top:10px; font-size:10px; background:#44050544; padding:8px; border-radius:4px; border:1px solid var(--danger);"><strong>[ ERROR ]</strong> ${j.error}</div>` : ""}
+            `;
+        }
+
+        async function emergencyPurge() {
+            if(!confirm("¿Seguro que quieres borrar TODOS los audios del servidor?")) return;
+            await fetch('/api/admin/emergency-purge', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
+            updateAll();
+        }
+
+        async function resetDB() {
+            if(!confirm("¿Seguro que quieres limpiar el historial de la Base de Datos?")) return;
+            await fetch('/api/admin/reset-db', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
+            updateAll();
+        }
+    </script>
+</body>
+</html>

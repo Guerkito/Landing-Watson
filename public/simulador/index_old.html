@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Dinámica Gerencial - WATSON</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; }
+        .patient-info { background: #e8f0fe; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .field-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
+        textarea { width: 100%; height: 80px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; resize: vertical; }
+        .btn-save { background-color: #1a73e8; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        .btn-save:hover { background-color: #1557b0; }
+        .status-bar { margin-top: 20px; font-size: 0.9em; color: #777; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dinámica Gerencial (Simulador)</h1>
+        
+        <div class="patient-info">
+            <div><strong>Paciente:</strong> Juan Pérez</div>
+            <div><strong>Documento:</strong> 123456789</div>
+            <div><strong>Edad:</strong> 45 años</div>
+        </div>
+
+        <form id="clinical-form">
+            <div class="field-group">
+                <label for="motivo_consulta">Motivo de Consulta</label>
+                <textarea id="motivo_consulta" name="motivo_consulta" placeholder="Escriba el motivo de la consulta..."></textarea>
+            </div>
+
+            <div class="field-group">
+                <label for="enfermedad_actual">Enfermedad Actual</label>
+                <textarea id="enfermedad_actual" name="enfermedad_actual" placeholder="Descripción de la enfermedad actual..."></textarea>
+            </div>
+
+            <div class="field-group">
+                <label for="antecedentes">Antecedentes</label>
+                <textarea id="antecedentes" name="antecedentes" placeholder="Antecedentes médicos relevantes..."></textarea>
+            </div>
+
+            <div class="field-group">
+                <label for="examen_fisico">Examen Físico</label>
+                <textarea id="examen_fisico" name="examen_fisico" placeholder="Hallazgos del examen físico..."></textarea>
+            </div>
+
+            <div class="field-group">
+                <label for="analisis_plan">Análisis y Plan de Manejo</label>
+                <textarea id="analisis_plan" name="analisis_plan" placeholder="Análisis clínico y tratamiento..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-save">Guardar Historia Clínica</button>
+        </form>
+
+        <div class="status-bar">
+            ID de Consulta: DG-2026-0424 | Usuario: Dr. Alexander G.
+        </div>
+    </div>
+</body>
+</html>

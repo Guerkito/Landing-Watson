@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" fill="none" width="240" height="48" role="img" aria-label="WATSON">
+  
+  <g transform="translate(8 24)" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none">
+    <circle cx="0" cy="0" r="3" fill="currentColor" stroke="none"></circle>
+    <path d="M-9 0 Q-6 -4 -3 0 T 3 0 T 9 0"></path>
+    <path d="M-14 0 Q-10 -7 -6 0 T 6 0 T 14 0" opacity="0.55"></path>
+  </g>
+  
+  <text x="40" y="32" font-family="Geist, Inter, ui-sans-serif, system-ui, sans-serif" font-weight="800" font-size="22" letter-spacing="-0.02em" fill="currentColor">WATSON</text>
+</svg>

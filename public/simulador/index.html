@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinámica Gerencial ULTRA - Simulador de Estrés</title>
+    <style>
+        :root { --primary: #1a73e8; --bg: #f1f3f4; --border: #dadce0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; font-size: 13px; }
+        .emr-container { max-width: 1100px; margin: auto; background: white; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: grid; grid-template-columns: 200px 1fr; }
+        
+        /* Sidebar lateral tipo HIS real */
+        .sidebar { background: #3c4043; color: white; padding: 15px; }
+        .sidebar h3 { font-size: 11px; text-transform: uppercase; color: #9aa0a6; margin-bottom: 20px; }
+        .menu-item { padding: 10px; border-bottom: 1px solid #5f6368; cursor: pointer; color: #e8eaed; }
+        .menu-item:hover { background: #4a4e52; }
+        .menu-item.active { background: var(--primary); color: white; border-bottom: none; }
+
+        /* Main Content */
+        .main-content { padding: 25px; height: 90vh; overflow-y: auto; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 20px; }
+        .patient-banner { background: #e8f0fe; padding: 10px 15px; border-radius: 4px; display: flex; gap: 20px; margin-bottom: 20px; border-left: 5px solid var(--primary); }
+        
+        section { margin-bottom: 30px; border: 1px solid #eee; padding: 15px; border-radius: 8px; position: relative; }
+        section h2 { font-size: 12px; color: var(--primary); text-transform: uppercase; margin-top: 0; margin-bottom: 15px; background: white; position: absolute; top: -10px; left: 10px; padding: 0 10px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .field { margin-bottom: 12px; }
+        label { display: block; font-weight: bold; margin-bottom: 4px; color: #5f6368; }
+        input, textarea, select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; box-sizing: border-box; font-size: 13px; }
+        textarea { height: 60px; }
+        
+        /* Simulación de campos contenteditable (Gap 2) */
+        .editable-box { min-height: 80px; border: 1px solid var(--border); border-radius: 4px; padding: 10px; background: #fffcf0; outline: none; }
+        .editable-box:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,115,232,0.1); }
+
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; background: #fee; color: #c00; margin-left: 5px; }
+        
+        /* Botón para Lazy Loading (Gap 1) */
+        .btn-add { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; }
+        .btn-add:hover { background: #1557b0; }
+
+        .table-meds { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .table-meds th { background: #f8f9fa; text-align: left; padding: 8px; border: 1px solid var(--border); }
+        .table-meds td { padding: 5px; border: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+
+<div class="emr-container">
+    <div class="sidebar">
+        <h3>Menu Clínico</h3>
+        <div class="menu-item">Triage</div>
+        <div class="menu-item active">Historia Clínica</div>
+        <div class="menu-item">Órdenes Médicas</div>
+        <div class="menu-item">Laboratorios</div>
+        <div class="menu-item">Imágenes</div>
+        <div class="menu-item">Epicrisis</div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1 style="margin:0; font-size: 18px;">Registro de Atención Ambulatoria</h1>
+            <span style="color: #777;">Folio: #99283-2026</span>
+        </header>
+
+        <div class="patient-banner">
+            <div><strong>Paciente:</strong> <input type="text" id="paciente_nombre" value="RODRÍGUEZ CASAS, ALBERTO" style="border:none; background:transparent; font-weight:bold; width:200px;"></div>
+            <div><strong>ID:</strong> CC 80123456</div>
+            <div><strong>Edad:</strong> 52 años</div>
+            <div><strong>Sede:</strong> Clínica Central Bogotá</div>
+        </div>
+
+        <!-- SECCIÓN 1: ANAMNESIS -->
+        <section>
+            <h2>📝 Anamnesis / Historia</h2>
+            <div class="field">
+                <label>Motivo de Consulta <span class="tag">CRÍTICO</span></label>
+                <input type="text" id="motivo_consulta" name="txt_motivo" placeholder="Ej: Dolor torácico opresivo...">
+            </div>
+            <div class="field">
+                <label>Relato de Enfermedad Actual</label>
+                <textarea id="enfermedad_actual" name="area_enfermedad" placeholder="Escriba la cronología detallada..."></textarea>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ANTECEDENTES (Lazy Loading Test) -->
+        <section>
+            <h2>📚 Antecedentes Médicos</h2>
+            <div class="grid">
+                <div class="field"><label>Quirúrgicos</label><input type="text" id="antecedentes_quirurgicos" placeholder="Cirugías previas"></div>
+                <div class="field"><label>Alérgicos</label><input type="text" id="antecedentes_alergicos" placeholder="Medicamentos, alimentos"></div>
+            </div>
+            <div class="field">
+                <label>Antecedentes Familiares / Otros</label>
+                <textarea id="antecedentes" name="antecedentes_generales"></textarea>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CONSTANTES VITALES -->
+        <section style="background: #fff5f5;">
+            <h2>🌡️ Constantes Vitales y Antropometría</h2>
+            <div class="grid">
+                <div class="field"><label>Peso (kg)</label><input type="text" id="peso" class="vital"></div>
+                <div class="field"><label>Talla (cm)</label><input type="text" id="talla" class="vital"></div>
+                <div class="field"><label>IMC</label><input type="text" id="imc" style="background:#eee;" readonly></div>
+                <div class="field"><label>Sistólica</label><input type="text" id="ta_sistolica" placeholder="120"></div>
+                <div class="field"><label>Diastólica</label><input type="text" id="ta_diastolica" placeholder="80"></div>
+                <div class="field"><label>Frec. Cardíaca</label><input type="text" id="fc" name="vital_fc"></div>
+                <div class="field"><label>Frec. Resp.</label><input type="text" id="fr" name="vital_fr"></div>
+                <div class="field"><label>Saturación O2</label><input type="text" id="sato2" name="vital_sat"></div>
+                <div class="field"><label>Temperatura</label><input type="text" id="temp" name="vital_temp"></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: EXAMEN FÍSICO (ContentEditable Test) -->
+        <section>
+            <h2>🩺 Examen Físico Segmentario</h2>
+            <button class="btn-add" onclick="addPhysicalField()">+ Añadir Hallazgo Específico</button>
+            <div id="dynamic-fields">
+                <div class="field">
+                    <label>Exploración General y Piel</label>
+                    <!-- Simulando el Gap de contenteditable -->
+                    <div id="examen_fisico_general" contenteditable="true" class="editable-box" placeholder="Describa el estado general..."></div>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="field"><label>Abdomen</label><textarea id="examen_fisico_abdomen"></textarea></div>
+                <div class="field"><label>Extremidades</label><textarea id="examen_fisico_extremidades"></textarea></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: IMPRESIÓN DIAGNÓSTICA -->
+        <section style="border: 2px solid var(--primary);">
+            <h2>💉 Diagnóstico y Codificación CIE-10</h2>
+            <div class="grid" style="grid-template-columns: 2fr 1fr;">
+                <div class="field">
+                    <label>Diagnóstico Principal</label>
+                    <input type="text" id="diagnostico" placeholder="Nombre completo de la patología">
+                </div>
+                <div class="field">
+                    <label>Código CIE-10</label>
+                    <input type="text" id="diagnostico_cie10" style="color:red; font-weight:bold; text-align:center;">
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: PLAN Y CONDUCTA -->
+        <section>
+            <h2>💊 Plan de Manejo y Conducta</h2>
+            <div class="field">
+                <label>Plan de Manejo Detallado</label>
+                <div id="plan_tratamiento" contenteditable="true" class="editable-box"></div>
+            </div>
+            
+            <label>Prescripciones (Tratamiento Farmacológico)</label>
+            <table class="table-meds">
+                <thead>
+                    <tr><th>Medicamento</th><th>Dosis</th><th>Frecuencia</th><th>Vía</th></tr>
+                </thead>
+                <tbody id="med-rows">
+                    <tr>
+                        <td><input type="text" placeholder="Ej: Acetaminofén"></td>
+                        <td><input type="text" placeholder="500mg"></td>
+                        <td><input type="text" placeholder="Cada 8h"></td>
+                        <td><input type="text" placeholder="Oral"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <button style="background:#202124; color:white; border:none; padding:15px 30px; border-radius:8px; font-weight:bold; cursor:pointer; width:100%;">GUARDAR Y FINALIZAR ATENCIÓN</button>
+    </div>
+</div>
+
+<script>
+    // Lógica para simular Lazy Loading (MutationObserver Test)
+    function addPhysicalField() {
+        const container = document.getElementById('dynamic-fields');
+        const div = document.createElement('div');
+        div.className = 'field';
+        div.innerHTML = `
+            <label>Hallazgos Cabeza y Cuello (Cargado dinámicamente)</label>
+            <textarea id="examen_fisico_cabeza" placeholder="Ojos, oídos, faringe..."></textarea>
+        `;
+        container.appendChild(div);
+    }
+
+    // Calcular IMC básico para realismo
+    document.querySelectorAll('.vital').forEach(el => {
+        el.addEventListener('input', () => {
+            const p = parseFloat(document.getElementById('peso').value);
+            const t = parseFloat(document.getElementById('talla').value) / 100;
+            if(p > 0 && t > 0) {
+                document.getElementById('imc').value = (p / (t * t)).toFixed(2);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
