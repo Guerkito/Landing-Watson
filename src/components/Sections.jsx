@@ -12,7 +12,7 @@ export const Header = () => (
   <header className="header">
     <div className="container header-inner">
       <a className="header-logo" href="#top" aria-label="WATSON">
-        <img src="/assets/onyx-wordmark.png" alt="WATSON" style={{ height: "32px", width: "auto", display: "block" }} />
+        <img src="/assets/watson-full.png" alt="WATSON" style={{ height: "32px", width: "auto", display: "block" }} />
       </a>
       <nav className="header-nav">
         <a href="#solucion">La solución</a>
@@ -623,7 +623,7 @@ export const Footer = () => (
       <div className="footer-grid">
         <div>
           <a className="header-logo" href="#top">
-            <img src="/assets/onyx-wordmark.png" alt="WATSON" style={{ height: "32px", width: "auto", display: "block", filter: "brightness(0) invert(1)" }} />
+            <img src="/assets/watson-full.png" alt="WATSON" style={{ height: "32px", width: "auto", display: "block", filter: "brightness(0) invert(1)" }} />
           </a>
           <p style={{ marginTop: 16, fontSize: 14, maxWidth: 36 + "ch", color: "var(--fg-muted)" }}>
             Inteligencia clínica local. Construido en Colombia para clínicas y hospitales de Colombia.
