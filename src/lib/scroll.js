@@ -1,21 +1,39 @@
 import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export const initLenis = () => {
-  const lenis = new Lenis({
-    duration: 1.2,
+gsap.registerPlugin(ScrollTrigger);
+
+let lenisInstance = null;
+
+export function initLenis() {
+  if (lenisInstance) return lenisInstance;
+
+  lenisInstance = new Lenis({
+    duration: 1.15,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    orientation: 'vertical',
-    gestureOrientation: 'vertical',
     smoothWheel: true,
-    wheelMultiplier: 1.2,
-    lerp: 0.1, // Luxury Inertia
+    wheelMultiplier: 1,
+    touchMultiplier: 1.4,
   });
 
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
+  lenisInstance.on("scroll", ScrollTrigger.update);
 
-  requestAnimationFrame(raf);
-  return lenis;
-};
+  gsap.ticker.add((time) => {
+    lenisInstance.raf(time * 1000);
+  });
+  gsap.ticker.lagSmoothing(0);
+
+  return lenisInstance;
+}
+
+export function destroyLenis() {
+  if (lenisInstance) {
+    lenisInstance.destroy();
+    lenisInstance = null;
+  }
+}
+
+export function getLenis() {
+  return lenisInstance;
+}

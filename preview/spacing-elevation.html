@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { background: #0A0A0B; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; }
+  .pane { padding: 32px 28px; }
+  .pane.light { background: #FAFAF9; }
+  .demos { display: flex; gap: 18px; align-items: center; }
+  .card { width: 100px; height: 70px; border-radius: 12px; }
+  .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5; margin-bottom: 18px; display: block; }
+
+  .pane.dark .card { background: #17171A; border: 1px solid rgba(255,255,255,0.08); }
+  .pane.dark .card.hi { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px rgba(255,255,255,0.06); background: #1C1C20; }
+  .pane.dark .card.glow { box-shadow: 0 0 0 1px rgba(37,99,235,0.5), 0 0 32px rgba(37,99,235,0.18); }
+  .pane.dark { color: #fff; }
+
+  .pane.light { color: #0A0A0B; }
+  .pane.light .card { background: #fff; border: 1px solid rgba(10,10,11,0.08); }
+  .pane.light .card.sm { box-shadow: 0 1px 2px rgba(10,10,11,0.04); }
+  .pane.light .card.md { box-shadow: 0 4px 12px rgba(10,10,11,0.08); }
+  .pane.light .card.lg { box-shadow: 0 16px 48px rgba(10,10,11,0.16); }
+
+  .name { font-family: var(--font-mono); font-size: 10px; opacity: 0.7; margin-top: 8px; display: block; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="pane dark">
+    <span class="label">Profundidad · dark</span>
+    <div class="demos">
+      <div><div class="card"></div><span class="name">flat</span></div>
+      <div><div class="card hi"></div><span class="name">+ inset 1px</span></div>
+      <div><div class="card glow"></div><span class="name">focus glow</span></div>
+    </div>
+  </div>
+  <div class="pane light">
+    <span class="label">Profundidad · light</span>
+    <div class="demos">
+      <div><div class="card sm"></div><span class="name">--shadow-sm</span></div>
+      <div><div class="card md"></div><span class="name">--shadow-md</span></div>
+      <div><div class="card lg"></div><span class="name">--shadow-lg</span></div>
+    </div>
+  </div>
+</body>
+</html>

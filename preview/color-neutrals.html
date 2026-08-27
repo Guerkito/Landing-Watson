@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 20px; }
+  .row { display: grid; grid-template-columns: repeat(11, 1fr); gap: 4px; }
+  .sw { aspect-ratio: 1.4; border-radius: 6px; display: flex; flex-direction: column; justify-content: flex-end; padding: 6px; font-family: var(--font-mono); font-size: 9px; }
+  .label { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+  .meta { color: rgba(0,0,0,0.65); }
+  .meta-d { color: rgba(255,255,255,0.7); }
+</style>
+</head>
+<body>
+  <div class="label">Neutros con tinte frío · escala 50 → 950</div>
+  <div class="row">
+    <div class="sw" style="background:#FAFAF9;color:#0A0A0B"><span class="meta">bone</span><span>FAFAF9</span></div>
+    <div class="sw" style="background:#F7F7F8;color:#0A0A0B"><span class="meta">50</span><span>F7F7F8</span></div>
+    <div class="sw" style="background:#EFEFF1;color:#0A0A0B"><span class="meta">100</span><span>EFEFF1</span></div>
+    <div class="sw" style="background:#E2E2E6;color:#0A0A0B"><span class="meta">200</span><span>E2E2E6</span></div>
+    <div class="sw" style="background:#C9C9D0;color:#0A0A0B"><span class="meta">300</span><span>C9C9D0</span></div>
+    <div class="sw" style="background:#A0A0AB;color:#0A0A0B"><span class="meta">400</span><span>A0A0AB</span></div>
+    <div class="sw" style="background:#71717A;color:#fff"><span class="meta-d">500</span><span>71717A</span></div>
+    <div class="sw" style="background:#52525B;color:#fff"><span class="meta-d">600</span><span>52525B</span></div>
+    <div class="sw" style="background:#3F3F46;color:#fff"><span class="meta-d">700</span><span>3F3F46</span></div>
+    <div class="sw" style="background:#27272A;color:#fff"><span class="meta-d">800</span><span>27272A</span></div>
+    <div class="sw" style="background:#0A0A0B;color:#fff;border:1px solid rgba(255,255,255,0.1)"><span class="meta-d">black</span><span>0A0A0B</span></div>
+  </div>
+</body>
+</html>

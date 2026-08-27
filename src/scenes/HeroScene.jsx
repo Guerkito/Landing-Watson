@@ -252,7 +252,7 @@ function FormFields({ charsRef, layout }) {
         anchorY="middle"
         letterSpacing={0.1}
       >
-        HISTORIA CLÍNICA · HIS · CONSULTA EXTERNA
+        DINÁMICA GERENCIAL · CONSULTA EXTERNA
       </Text>
     </group>
   );

@@ -236,7 +236,7 @@ const Solution = () => {
   const states = [
     { step: "01", title: "El médico habla naturalmente.", visual: "wave" },
     { step: "02", title: "ONYX transcribe y analiza en tiempo real.", visual: "json" },
-    { step: "03", title: "Historia clínica completa en su sistema (HIS).", visual: "form" },
+    { step: "03", title: "Historia clínica completa en Dinámica Gerencial.", visual: "form" },
   ];
   useEffect(() => {
     const el = wrapRef.current;
@@ -348,7 +348,7 @@ const WhyDifferent = () => {
     { icon: <Icons.Settings size={24}/>, title: "Aprende su clínica en menos de 30 segundos.", body: "Mapeo automático de los formularios reales del HIS. Sin configurar campo por campo." },
     { icon: <Icons.HeartPulse size={24}/>, title: "Inteligencia por especialidad.", body: "Medicina General, Pediatría, Cardiología, Ginecología, Ortopedia, Dermatología, Psiquiatría." },
     { icon: <Icons.Shield size={24}/>, title: "Privacidad por diseño.", body: "100 % local. Audio borrado tras la consulta. Cumple Ley 1581 y Resolución 1995." },
-    { icon: <Icons.Cpu size={24}/>, title: "Sin tocar el HIS.", body: "Funciona sobre su sistema actual sin modificarlo. Sin contratos adicionales con terceros." },
+    { icon: <Icons.Cpu size={24}/>, title: "Sin tocar el HIS.", body: "Funciona sobre Dinámica Gerencial sin modificarlo. Sin contratos adicionales con SYAC." },
   ];
   return (
     <section className="section" id="diferencia">

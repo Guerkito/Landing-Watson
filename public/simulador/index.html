@@ -1,796 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinámica Gerencial ULTRA - Simulador de Estrés</title>
     <style>
-        :root { --primary: #1a73e8; --primary-dark: #1557b0; --bg: #f8f9fa; --border: #dadce0; --white: #ffffff; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 0; font-size: 13px; color: #3c4043; height: 100vh; overflow: hidden; }
+        :root { --primary: #1a73e8; --bg: #f1f3f4; --border: #dadce0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; font-size: 13px; }
+        .emr-container { max-width: 1100px; margin: auto; background: white; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: grid; grid-template-columns: 200px 1fr; }
         
-        .his-layout { display: grid; grid-template-rows: 60px 40px 1fr 60px; height: 100vh; }
-        
-        /* Top Navbar */
-        header { background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; justify-content: space-between; }
-        .patient-info { display: flex; gap: 25px; align-items: center; background: #e8f0fe; padding: 8px 20px; border-radius: 30px; border: 1px solid #d2e3fc; }
-        
-        /* Tab Bar */
-        .tab-bar { background: #fff; border-bottom: 1px solid var(--border); display: flex; padding: 0 20px; gap: 2px; }
-        .tab { padding: 10px 20px; cursor: pointer; border-bottom: 3px solid transparent; font-weight: 600; color: #5f6368; transition: 0.2s; }
-        .tab:hover { background: #f1f3f4; }
-        .tab.active { border-color: var(--primary); color: var(--primary); background: #e8f0fe33; }
+        /* Sidebar lateral tipo HIS real */
+        .sidebar { background: #3c4043; color: white; padding: 15px; }
+        .sidebar h3 { font-size: 11px; text-transform: uppercase; color: #9aa0a6; margin-bottom: 20px; }
+        .menu-item { padding: 10px; border-bottom: 1px solid #5f6368; cursor: pointer; color: #e8eaed; }
+        .menu-item:hover { background: #4a4e52; }
+        .menu-item.active { background: var(--primary); color: white; border-bottom: none; }
 
-        /* Content Area */
-        .main-scroll { padding: 20px; overflow-y: auto; background: var(--bg); }
-        .content-card { max-width: 1000px; margin: auto; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 30px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        /* Main Content */
+        .main-content { padding: 25px; height: 90vh; overflow-y: auto; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 20px; }
+        .patient-banner { background: #e8f0fe; padding: 10px 15px; border-radius: 4px; display: flex; gap: 20px; margin-bottom: 20px; border-left: 5px solid var(--primary); }
         
-        .section-pane { display: none; }
-        .section-pane.active { display: block; animation: fadeIn 0.2s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        section { margin-bottom: 30px; border: 1px solid #eee; padding: 15px; border-radius: 8px; position: relative; }
+        section h2 { font-size: 12px; color: var(--primary); text-transform: uppercase; margin-top: 0; margin-bottom: 15px; background: white; position: absolute; top: -10px; left: 10px; padding: 0 10px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .field { margin-bottom: 12px; }
+        label { display: block; font-weight: bold; margin-bottom: 4px; color: #5f6368; }
+        input, textarea, select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; box-sizing: border-box; font-size: 13px; }
+        textarea { height: 60px; }
+        
+        /* Simulación de campos contenteditable (Gap 2) */
+        .editable-box { min-height: 80px; border: 1px solid var(--border); border-radius: 4px; padding: 10px; background: #fffcf0; outline: none; }
+        .editable-box:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,115,232,0.1); }
 
-        h2 { font-size: 14px; text-transform: uppercase; color: var(--primary); margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; background: #fee; color: #c00; margin-left: 5px; }
         
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
-        .field { margin-bottom: 15px; }
-        label { display: block; font-weight: 700; margin-bottom: 6px; color: #202124; font-size: 11px; text-transform: uppercase; }
-        input, textarea, select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; box-sizing: border-box; font-size: 13px; transition: border-color 0.2s; }
-        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,115,232,0.1); }
-        
-        .editable-box { min-height: 120px; border: 1px solid var(--border); border-radius: 4px; padding: 12px; background: #fffdf0; outline: none; line-height: 1.5; }
-        
-        .vital-box { background: #fef7f7; border: 1px solid #fad2d2; padding: 15px; border-radius: 8px; }
-        
-        /* Footer */
-        footer { background: #fff; border-top: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; justify-content: flex-end; gap: 15px; }
-        .btn-save { background: #202124; color: white; border: none; padding: 10px 25px; border-radius: 6px; font-weight: 700; cursor: pointer; }
-        .btn-save:hover { background: #000; }
-        
-        .badge-critical { background: #fce8e6; color: #d93025; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin-left: 10px; }
+        /* Botón para Lazy Loading (Gap 1) */
+        .btn-add { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; }
+        .btn-add:hover { background: #1557b0; }
 
-        /* Searchable Picker Styles */
-        .searchable-picker { position: relative; }
-        .picker-results { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border); border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 100; max-height: 200px; overflow-y: auto; display: none; }
-        .picker-item { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #f1f3f4; transition: 0.2s; }
-        .picker-item:hover { background: #e8f0fe; color: var(--primary); }
-        .picker-item strong { color: #d93025; margin-right: 10px; font-family: monospace; }
+        .table-meds { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .table-meds th { background: #f8f9fa; text-align: left; padding: 8px; border: 1px solid var(--border); }
+        .table-meds td { padding: 5px; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
-<div class="his-layout">
-    <header>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <img src="/assets/logo.svg" height="24" onerror="this.style.display='none'">
-            <strong style="font-size: 16px; color: var(--primary);">DGH Pro+</strong>
-            <span style="color: #ccc;">|</span>
-            <span>Estación de Trabajo Médica</span>
-        </div>
-        <div class="patient-info">
-            <div><strong>RODRÍGUEZ CASAS, ALBERTO</strong> <span style="color: #5f6368; margin-left: 10px;">CC 80123456</span></div>
-            <div>52 Años (Masculino)</div>
-            <div style="color: #d93025; font-weight: 800;">ALERGIA: PENICILINA</div>
-        </div>
-    </header>
+<div class="emr-container">
+    <div class="sidebar">
+        <h3>Menu Clínico</h3>
+        <div class="menu-item">Triage</div>
+        <div class="menu-item active">Historia Clínica</div>
+        <div class="menu-item">Órdenes Médicas</div>
+        <div class="menu-item">Laboratorios</div>
+        <div class="menu-item">Imágenes</div>
+        <div class="menu-item">Epicrisis</div>
+    </div>
 
-    <nav class="tab-bar">
-        <div class="tab active" onclick="showTab('anamnesis')">ANAMNESIS</div>
-        <div class="tab" onclick="showTab('vitals')">CONSTANTES</div>
-        <div class="tab" onclick="showTab('physical')">EXAMEN FÍSICO</div>
-        <div class="tab" onclick="showTab('diagnosis')">DIAGNÓSTICO</div>
-        <div class="tab" onclick="showTab('orders')">PLAN Y ÓRDENES</div>
-    </nav>
+    <div class="main-content">
+        <header>
+            <h1 style="margin:0; font-size: 18px;">Registro de Atención Ambulatoria</h1>
+            <span style="color: #777;">Folio: #99283-2026</span>
+        </header>
 
-    <main class="main-scroll">
-        <div class="content-card">
+        <div class="patient-banner">
+            <div><strong>Paciente:</strong> <input type="text" id="paciente_nombre" value="RODRÍGUEZ CASAS, ALBERTO" style="border:none; background:transparent; font-weight:bold; width:200px;"></div>
+            <div><strong>ID:</strong> CC 80123456</div>
+            <div><strong>Edad:</strong> 52 años</div>
+            <div><strong>Sede:</strong> Clínica Central Bogotá</div>
+        </div>
+
+        <!-- SECCIÓN 1: ANAMNESIS -->
+        <section>
+            <h2>📝 Anamnesis / Historia</h2>
+            <div class="field">
+                <label>Motivo de Consulta <span class="tag">CRÍTICO</span></label>
+                <input type="text" id="motivo_consulta" name="txt_motivo" placeholder="Ej: Dolor torácico opresivo...">
+            </div>
+            <div class="field">
+                <label>Relato de Enfermedad Actual</label>
+                <textarea id="enfermedad_actual" name="area_enfermedad" placeholder="Escriba la cronología detallada..."></textarea>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ANTECEDENTES (Lazy Loading Test) -->
+        <section>
+            <h2>📚 Antecedentes Médicos</h2>
+            <div class="grid">
+                <div class="field"><label>Quirúrgicos</label><input type="text" id="antecedentes_quirurgicos" placeholder="Cirugías previas"></div>
+                <div class="field"><label>Alérgicos</label><input type="text" id="antecedentes_alergicos" placeholder="Medicamentos, alimentos"></div>
+            </div>
+            <div class="field">
+                <label>Antecedentes Familiares / Otros</label>
+                <textarea id="antecedentes" name="antecedentes_generales"></textarea>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CONSTANTES VITALES -->
+        <section style="background: #fff5f5;">
+            <h2>🌡️ Constantes Vitales y Antropometría</h2>
+            <div class="grid">
+                <div class="field"><label>Peso (kg)</label><input type="text" id="peso" class="vital"></div>
+                <div class="field"><label>Talla (cm)</label><input type="text" id="talla" class="vital"></div>
+                <div class="field"><label>IMC</label><input type="text" id="imc" style="background:#eee;" readonly></div>
+                <div class="field"><label>Sistólica</label><input type="text" id="ta_sistolica" placeholder="120"></div>
+                <div class="field"><label>Diastólica</label><input type="text" id="ta_diastolica" placeholder="80"></div>
+                <div class="field"><label>Frec. Cardíaca</label><input type="text" id="fc" name="vital_fc"></div>
+                <div class="field"><label>Frec. Resp.</label><input type="text" id="fr" name="vital_fr"></div>
+                <div class="field"><label>Saturación O2</label><input type="text" id="sato2" name="vital_sat"></div>
+                <div class="field"><label>Temperatura</label><input type="text" id="temp" name="vital_temp"></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: EXAMEN FÍSICO (ContentEditable Test) -->
+        <section>
+            <h2>🩺 Examen Físico Segmentario</h2>
+            <button class="btn-add" onclick="addPhysicalField()">+ Añadir Hallazgo Específico</button>
+            <div id="dynamic-fields">
+                <div class="field">
+                    <label>Exploración General y Piel</label>
+                    <!-- Simulando el Gap de contenteditable -->
+                    <div id="examen_fisico_general" contenteditable="true" class="editable-box" placeholder="Describa el estado general..."></div>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="field"><label>Abdomen</label><textarea id="examen_fisico_abdomen"></textarea></div>
+                <div class="field"><label>Extremidades</label><textarea id="examen_fisico_extremidades"></textarea></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: IMPRESIÓN DIAGNÓSTICA -->
+        <section style="border: 2px solid var(--primary);">
+            <h2>💉 Diagnóstico y Codificación CIE-10</h2>
+            <div class="grid" style="grid-template-columns: 2fr 1fr;">
+                <div class="field">
+                    <label>Diagnóstico Principal</label>
+                    <input type="text" id="diagnostico" placeholder="Nombre completo de la patología">
+                </div>
+                <div class="field">
+                    <label>Código CIE-10</label>
+                    <input type="text" id="diagnostico_cie10" style="color:red; font-weight:bold; text-align:center;">
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: PLAN Y CONDUCTA -->
+        <section>
+            <h2>💊 Plan de Manejo y Conducta</h2>
+            <div class="field">
+                <label>Plan de Manejo Detallado</label>
+                <div id="plan_tratamiento" contenteditable="true" class="editable-box"></div>
+            </div>
             
-            <!-- PESTAÑA 1: ANAMNESIS -->
-            <div id="anamnesis" class="section-pane active">
-                <h2>Admisión y Anamnesis</h2>
-                <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);">
-                    <div class="field">
-                        <label>Vía de Ingreso</label>
-                        <select id="via_ingreso">
-                            <option value="Consulta Externa">Consulta Externa</option>
-                            <option value="Urgencias">Urgencias</option>
-                            <option value="Prioritaria">Prioritaria</option>
-                            <option value="Remitido">Remitido</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Acompañante</label>
-                        <select id="acompanante">
-                            <option value="Sin acompañante">Sin acompañante (Solo)</option>
-                            <option value="Familiar">Familiar</option>
-                            <option value="Policía/Rescate">Policía / Rescate</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Estado Civil</label>
-                        <select id="estado_civil">
-                            <option value="">-- Seleccione --</option>
-                            <option value="Soltero(a)">Soltero(a)</option>
-                            <option value="Casado(a)">Casado(a)</option>
-                            <option value="Unión Libre">Unión Libre</option>
-                            <option value="Viudo(a)">Viudo(a)</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Ocupación</label>
-                        <select id="ocupacion">
-                             <option value="">-- Seleccione --</option>
-                             <option value="Empleado">Empleado</option>
-                             <option value="Independiente">Independiente</option>
-                             <option value="Desempleado">Desempleado</option>
-                             <option value="Hogar">Hogar</option>
-                             <option value="Estudiante">Estudiante</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-grid">
-                    <div class="field">
-                        <label>Motivo de Consulta Principal</label>
-                        <select id="motivo_consulta">
-                            <option value="">-- Seleccione Motivo --</option>
-                            <option value="Dolor abdominal">Dolor abdominal</option>
-                            <option value="Cefalea">Cefalea</option>
-                            <option value="Disnea">Disnea</option>
-                            <option value="Dolor lumbar">Dolor lumbar</option>
-                            <option value="Trauma">Trauma</option>
-                            <option value="Fiebre">Fiebre</option>
-                            <option value="Control">Control de rutina</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Clasificación del Cuadro</label>
-                        <select id="clasificacion_cuadro">
-                            <option value="">-- Seleccione --</option>
-                            <option value="Agudo">Agudo (< 7 días)</option>
-                            <option value="Subagudo">Subagudo (1-3 semanas)</option>
-                            <option value="Crónico">Crónico (> 3 semanas)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="field">
-                    <label>Relato de Enfermedad Actual (Plantillas Institucionales)</label>
-                    <select id="enfermedad_actual">
-                        <option value="">-- Seleccione Relato Tipo --</option>
-                        <option value="Cuadro agudo febril respiratorio, asociado a tos">Cuadro agudo febril / respiratorio</option>
-                        <option value="Dolor lumbar mecánico agudo post-esfuerzo, sin déficit neurológico">Dolor lumbar mecánico agudo</option>
-                        <option value="Síndrome dispéptico, epigastralgia tipo ardor">Síndrome dispéptico / Reflujo</option>
-                        <option value="Paciente asintomático, acude a control de patología crónica">Paciente asintomático en control</option>
-                    </select>
-                </div>
-                <h3 style="font-size:11px; color:#5f6368; border-bottom:1px solid #eee; padding-bottom:5px;">Revisión por Sistemas (Cerrado)</h3>
-                <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);">
-                    <div class="field"><label>Cardiovascular</label><select id="rev_cardio"><option value="Normal">Normal</option><option value="Palpitaciones">Palpitaciones</option><option value="Dolor torácico">Dolor torácico</option></select></div>
-                    <div class="field"><label>Respiratorio</label><select id="rev_resp"><option value="Normal">Normal</option><option value="Tos">Tos</option><option value="Disnea">Disnea</option></select></div>
-                    <div class="field"><label>Gastrointestinal</label><select id="rev_gastro"><option value="Normal">Normal</option><option value="Náuseas/Vómito">Náuseas/Vómito</option><option value="Diarrea">Diarrea</option></select></div>
-                    <div class="field"><label>Genitourinario</label><select id="rev_gu"><option value="Normal">Normal</option><option value="Disuria">Disuria</option><option value="Hematuria">Hematuria</option></select></div>
-                    <div class="field"><label>Neurológico</label><select id="rev_neuro"><option value="Normal">Normal</option><option value="Mareo">Mareo</option><option value="Paresias">Paresias</option></select></div>
-                </div>
-            </div>
+            <label>Prescripciones (Tratamiento Farmacológico)</label>
+            <table class="table-meds">
+                <thead>
+                    <tr><th>Medicamento</th><th>Dosis</th><th>Frecuencia</th><th>Vía</th></tr>
+                </thead>
+                <tbody id="med-rows">
+                    <tr>
+                        <td><input type="text" placeholder="Ej: Acetaminofén"></td>
+                        <td><input type="text" placeholder="500mg"></td>
+                        <td><input type="text" placeholder="Cada 8h"></td>
+                        <td><input type="text" placeholder="Oral"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-            <!-- PESTAÑA 2: ANTECEDENTES (Nueva Pestaña) -->
-            <div id="antecedentes_tab" class="section-pane">
-                <h2>Antecedentes Personales y Familiares</h2>
-                <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="field">
-                        <label>Patológicos</label>
-                        <select id="antecedentes_patologicos">
-                            <option value="">-- Seleccione --</option><option value="Hipertensión Arterial">Hipertensión Arterial</option><option value="Diabetes Mellitus">Diabetes Mellitus</option><option value="Asma">Asma</option><option value="Hipotiroidismo">Hipotiroidismo</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Quirúrgicos</label>
-                        <select id="antecedentes_quirurgicos">
-                            <option value="">-- Seleccione --</option><option value="Apendicetomía">Apendicetomía</option><option value="Colecistectomía">Colecistectomía</option><option value="Cesárea">Cesárea</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Alérgicos</label>
-                        <select id="antecedentes_alergicos">
-                            <option value="">-- Seleccione --</option><option value="Penicilina">Penicilina</option><option value="AINES">AINES</option><option value="Sulfa">Sulfa</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Farmacológicos (Uso crónico)</label>
-                        <select id="antecedentes_farmacologicos">
-                            <option value="">-- Seleccione --</option><option value="Antihipertensivos">Antihipertensivos</option><option value="Hipoglicemiantes">Hipoglicemiantes</option><option value="Anticonceptivos">Anticonceptivos</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Tóxicos</label>
-                        <select id="antecedentes_toxicos">
-                            <option value="">-- Seleccione --</option><option value="Tabaquismo activo">Tabaquismo activo</option><option value="Consumo de alcohol">Consumo de alcohol ocasional</option><option value="Sustancias psicoactivas">SPA</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Familiares</label>
-                        <select id="antecedentes_familiares">
-                            <option value="">-- Seleccione --</option><option value="HTA familiar">Padres con HTA</option><option value="DM familiar">Padres con Diabetes</option><option value="Cáncer familiar">Antecedente oncológico</option>
-                        </select>
-                    </div>
-                </div>
-
-                <h3 style="font-size:11px; color:#5f6368; border-bottom:1px solid #eee; padding-bottom:5px; margin-top:10px;">Otros Antecedentes</h3>
-                <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-                    <div class="field">
-                        <label>Transfusionales</label>
-                        <select id="antecedentes_transfusionales">
-                            <option value="">-- Seleccione --</option><option value="Sangre total">Sangre total</option><option value="Plaquetas">Plaquetas</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Inmunológicos (Vacunas)</label>
-                        <select id="antecedentes_inmunologicos">
-                            <option value="Esquema completo">Esquema completo</option><option value="Esquema incompleto">Esquema incompleto</option><option value="Sin datos">Sin datos</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Psiquiátricos</label>
-                        <select id="antecedentes_psiquiatricos">
-                            <option value="">-- Seleccione --</option><option value="Depresión">Depresión</option><option value="Ansiedad">Ansiedad</option><option value="Esquizofrenia">Esquizofrenia</option>
-                        </select>
-                    </div>
-                </div>
-
-                <h3 style="font-size:11px; color:var(--primary); border-bottom:1px solid #eee; padding-bottom:5px; margin-top:20px;">Antecedentes Gineco-Obstétricos (AGO)</h3>
-                <div class="form-grid" style="grid-template-columns: repeat(5, 1fr);">
-                    <div class="field">
-                        <label>Gestaciones (G)</label>
-                        <select id="ago_gestaciones">
-                            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4+">4+</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Partos (P)</label>
-                        <select id="ago_partos">
-                            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4+">4+</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Cesáreas (C)</label>
-                        <select id="ago_cesareas">
-                            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4+">4+</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Abortos (A)</label>
-                        <select id="ago_abortos">
-                            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4+">4+</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Planificación</label>
-                        <select id="ago_planificacion">
-                            <option value="">-- Seleccione --</option><option value="ACO">ACO (Orales)</option><option value="DIU">DIU</option><option value="Implante">Implante subd.</option><option value="Preservativo">Preservativo</option><option value="Definitivo">Definitivo (Pomeroy)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PESTAÑA 3: VITALES -->
-            <div id="vitals" class="section-pane">
-                <h2>Signos Vitales y Biometría</h2>
-                <div class="vital-box">
-                    <div class="form-grid">
-                        <div class="field">
-                            <label>Peso (kg)</label>
-                            <select id="peso" class="vital">
-                                <option value="">-- Peso --</option>
-                                <option value="50">50 kg</option><option value="60">60 kg</option><option value="70">70 kg</option><option value="80">80 kg</option><option value="90">90 kg</option><option value="100">100 kg</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>Talla (cm)</label>
-                            <select id="talla" class="vital">
-                                <option value="">-- Talla --</option>
-                                <option value="150">150 cm</option><option value="160">160 cm</option><option value="170">170 cm</option><option value="180">180 cm</option><option value="190">190 cm</option>
-                            </select>
-                        </div>
-                        <div class="field"><label>IMC</label><input type="text" id="imc" readonly style="background: #f1f3f4;"></div>
-                    </div>
-                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <div class="field">
-                            <label>TA Sistólica</label>
-                            <select id="ta_sistolica">
-                                <option value="">-- Sistólica --</option>
-                                <option value="100">100 mmHg</option><option value="110">110 mmHg</option><option value="120">120 mmHg</option><option value="130">130 mmHg</option><option value="140">140 mmHg</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>TA Diastólica</label>
-                            <select id="ta_diastolica">
-                                <option value="">-- Diastólica --</option>
-                                <option value="60">60 mmHg</option><option value="70">70 mmHg</option><option value="80">80 mmHg</option><option value="90">90 mmHg</option><option value="100">100 mmHg</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>FC (lpm)</label>
-                            <select id="fc">
-                                <option value="">-- FC --</option>
-                                <option value="60">60 lpm</option><option value="70">70 lpm</option><option value="80">80 lpm</option><option value="90">90 lpm</option><option value="100">100 lpm</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>FR (rpm)</label>
-                            <select id="fr">
-                                <option value="">-- FR --</option>
-                                <option value="14">14 rpm</option><option value="16">16 rpm</option><option value="18">18 rpm</option><option value="20">20 rpm</option><option value="22">22 rpm</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-                        <div class="field">
-                            <label>Saturación O2 (%)</label>
-                            <select id="sato2">
-                                <option value="">-- SatO2 --</option>
-                                <option value="90">90%</option><option value="92">92%</option><option value="95">95%</option><option value="98">98%</option><option value="100">100%</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>Temperatura (°C)</label>
-                            <select id="temp">
-                                <option value="">-- Temp --</option>
-                                <option value="36.0">36.0 °C</option><option value="36.5">36.5 °C</option><option value="37.0">37.0 °C</option><option value="38.0">38.0 °C</option><option value="39.0">39.0 °C</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>Escala del Dolor (EVA)</label>
-                            <select id="escala_dolor">
-                                <option value="0">0 - Sin dolor</option><option value="2">2 - Leve</option><option value="5">5 - Moderado</option><option value="8">8 - Severo</option><option value="10">10 - Insuperable</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
-                        <div class="field">
-                            <label>Perímetro Cefálico (cm)</label>
-                            <select id="perimetro_cefalico">
-                                <option value="">-- No aplica --</option><option value="35">35 cm</option><option value="40">40 cm</option><option value="45">45 cm</option><option value="50">50 cm</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>Perímetro Abdominal (cm)</label>
-                            <select id="perimetro_abdominal">
-                                <option value="">-- No aplica --</option><option value="70">70 cm</option><option value="80">80 cm</option><option value="90">90 cm</option><option value="100">100 cm</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PESTAÑA 4: EXAMEN FÍSICO -->
-            <div id="physical" class="section-pane">
-                <h2>Examen Físico (100% Estructurado)</h2>
-                <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="field">
-                        <label>Estado General</label>
-                        <select id="examen_fisico_general">
-                            <option value="Buen estado general">Buen estado general</option><option value="Regular estado general">Regular estado general</option><option value="Mal estado general">Mal estado general</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Estado de Conciencia</label>
-                        <select id="estado_conciencia">
-                            <option value="Alerta y orientado">Alerta y orientado (15/15)</option><option value="Somnoliento">Somnoliento</option><option value="Estuporoso">Estuporoso</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Cabeza y Cuello</label>
-                        <select id="examen_fisico_cabeza">
-                            <option value="Normocéfalo, sin adenopatías">Normocéfalo, cuello móvil sin masas</option><option value="Faringe congestiva">Faringe congestiva / eritematosa</option><option value="Adenopatías cervicales">Adenopatías palpables</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Cardiopulmonar (Tórax)</label>
-                        <select id="examen_fisico_torax">
-                            <option value="Ruidos rítmicos, pulmones claros">Ruidos rítmicos, pulmones claros</option><option value="Sibilancias">Sibilancias espiratorias</option><option value="Soplo sistólico">Soplos cardiacos detectados</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Abdomen</label>
-                        <select id="examen_fisico_abdomen">
-                            <option value="Blando, depresible, no doloroso">Blando, depresible, no doloroso</option><option value="Dolor a la palpación profunda">Dolor a la palpación profunda</option><option value="Distendido">Distendido, timpanismo</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Extremidades</label>
-                        <select id="examen_fisico_extremidades">
-                            <option value="Simétricas, sin edemas">Simétricas, sin edemas</option><option value="Edema grado II">Edema en miembros inferiores</option><option value="Pulsos disminuidos">Pulsos distales disminuidos</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Neurológico</label>
-                        <select id="examen_fisico_neuro">
-                            <option value="Sin déficit sensitivo ni motor">Sin déficit sensitivo ni motor</option><option value="Fuerza conservada">Fuerza 5/5 global</option><option value="Alteración de la marcha">Alteración de la marcha</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Piel y Faneras</label>
-                        <select id="examen_fisico_piel">
-                            <option value="Piel sana, sin lesiones">Piel sana, sin lesiones</option><option value="Palidez mucocutánea">Palidez mucocutánea</option><option value="Lesiones eritematosas">Lesiones eritematosas / Rash</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Osteomuscular</label>
-                        <select id="examen_fisico_osteo">
-                            <option value="Arcos de movilidad conservados">Arcos de movilidad conservados</option><option value="Limitación funcional">Limitación funcional</option><option value="Deformidad evidente">Deformidad evidente</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Otorrinolaringología (ORL)</label>
-                        <select id="examen_fisico_orl">
-                            <option value="Conductos permeables, tímpanos sanos">Normal (Permeables)</option><option value="Otitis media">Eritema timpánico</option><option value="Rinorrea">Rinorrea purulenta</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Oftalmológico</label>
-                        <select id="examen_fisico_oftalmo">
-                            <option value="Pupilas isocóricas reactivas">Pupilas isocóricas reactivas</option><option value="Anisocoria">Anisocoria</option><option value="Déficit visual">Déficit de agudeza visual</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Genitourinario</label>
-                        <select id="examen_fisico_gu">
-                            <option value="Genitales de aspecto sano">Genitales de aspecto sano</option><option value="Globo vesical palpable">Globo vesical</option><option value="Secreción anormal">Secreción uretral / vaginal</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PESTAÑA 5: DIAGNÓSTICO -->
-            <div id="diagnosis" class="section-pane">
-                <h2>Diagnóstico y Conducta</h2>
-                <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="field">
-                        <label>Tipo de Diagnóstico</label>
-                        <select id="tipo_diagnostico">
-                            <option value="Impresión Diagnóstica">Impresión Diagnóstica</option><option value="Confirmado Nuevo">Confirmado Nuevo</option><option value="Confirmado Repetido">Confirmado Repetido</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Grupo Diagnóstico</label>
-                        <select id="grupo_diagnostico" onchange="updateDiagnosticos()">
-                            <option value="">-- Seleccione Categoría --</option>
-                            <option value="Respiratorio">Enfermedades Respiratorias</option>
-                            <option value="Osteomuscular">Enfermedades Osteomusculares</option>
-                            <option value="Cardiometabolico">Enfermedades Cardiometabólicas</option>
-                            <option value="Infeccioso">Enfermedades Infecciosas</option>
-                            <option value="Neurologico">Enfermedades Neurológicas</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Diagnóstico CIE-10 Principal</label>
-                        <select id="diagnostico">
-                            <option value="">-- Primero seleccione Grupo --</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Diagnóstico Relacionado 1</label>
-                        <select id="diagnostico_relacionado_1">
-                            <option value="">-- Ninguno --</option>
-                            <option value="I10">I10 - Hipertensión esencial</option>
-                            <option value="E119">E119 - Diabetes mellitus</option>
-                            <option value="E669">E669 - Obesidad no especificada</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Diagnóstico Relacionado 2</label>
-                        <select id="diagnostico_relacionado_2">
-                            <option value="">-- Ninguno --</option>
-                            <option value="J459">J459 - Asma</option>
-                            <option value="I209">I209 - Angina de pecho</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="field">
-                    <label>Pronóstico Vital</label>
-                    <select id="pronostico">
-                        <option value="Bueno">Bueno</option><option value="Reservado">Reservado</option><option value="Malo">Malo</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Plan / Conducta Clínica</label>
-                    <select id="plan_tratamiento">
-                        <option value="">-- Seleccione Plan --</option>
-                        <option value="Manejo ambulatorio con analgésicos">Manejo ambulatorio (Tratamiento oral)</option>
-                        <option value="Observación en urgencias">Dejar en observación</option>
-                        <option value="Remisión a especialista">Remisión a Especialista</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Incapacidad Médica</label>
-                    <select id="incapacidad">
-                        <option value="No requiere">No requiere</option><option value="1 día">1 día</option><option value="3 días">3 días</option><option value="5 días">5 días</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- PESTAÑA 6: ÓRDENES -->
-            <div id="orders" class="section-pane">
-                <h2>Formulario Múltiple (Órdenes)</h2>
-                
-                <h3 style="font-size:11px; color:var(--primary); border-bottom:1px solid #eee; padding-bottom:5px;">1. Prescripción Farmacológica</h3>
-                <div class="form-grid" style="grid-template-columns: 2fr 2fr 1fr 1fr 1fr;">
-                    <div class="field">
-                        <label>Grupo Farmacológico</label>
-                        <select id="grupo_farmacologico" onchange="updateMedicamentos()">
-                            <option value="">-- Familia --</option>
-                            <option value="Analgésicos/AINES">Analgésicos / AINES</option>
-                            <option value="Antibióticos">Antibióticos</option>
-                            <option value="Antihipertensivos">Antihipertensivos</option>
-                            <option value="Gastrointestinales">Gastrointestinales</option>
-                            <option value="Hipoglicemiantes">Hipoglicemiantes</option>
-                            <option value="Respiratorios">Respiratorios / Alergias</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Medicamento</label>
-                        <select id="medicamento">
-                            <option value="">-- Primero seleccione Grupo --</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Vía</label>
-                        <select id="via_admin"><option value="Oral">Oral</option><option value="Intravenosa">Intravenosa</option><option value="Intramuscular">Intramuscular</option></select>
-                    </div>
-                    <div class="field">
-                        <label>Frecuencia</label>
-                        <select id="frecuencia"><option value="">-- Intervalo --</option><option value="Cada 6 horas">Cada 6h</option><option value="Cada 8 horas">Cada 8h</option><option value="Cada 12 horas">Cada 12h</option><option value="Cada 24 horas">Cada 24h</option></select>
-                    </div>
-                    <div class="field">
-                        <label>Duración</label>
-                        <select id="duracion_tx"><option value="">-- Tiempo --</option><option value="3 días">3 días</option><option value="5 días">5 días</option><option value="7 días">7 días</option><option value="30 días">30 días</option></select>
-                    </div>
-                </div>
-
-                <h3 style="font-size:11px; color:var(--primary); border-bottom:1px solid #eee; padding-bottom:5px; margin-top:20px;">2. Laboratorios e Imágenes</h3>
-                <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="field">
-                        <label>Exámenes Clínicos</label>
-                        <select id="examenes_lab">
-                            <option value="">-- Ninguno --</option><option value="Hemograma">Hemograma tipo IV</option><option value="Uroanálisis">Uroanálisis con sedimento</option><option value="Creatinina">Creatinina en suero</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Imágenes Diagnósticas</label>
-                        <select id="imagenes_diag">
-                            <option value="">-- Ninguna --</option><option value="RX Torax">Radiografía de Tórax AP/Lat</option><option value="Ecografia Abdomen">Ecografía Abdominal Total</option><option value="TAC Craneo">TAC de Cráneo Simple</option>
-                        </select>
-                    </div>
-                </div>
-                <h3 style="font-size:11px; color:var(--primary); border-bottom:1px solid #eee; padding-bottom:5px; margin-top:20px;">3. Recomendaciones y Remisiones</h3>
-                <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-                    <div class="field">
-                        <label>Dieta</label>
-                        <select id="orden_dieta">
-                            <option value="">-- Seleccione --</option><option value="Normal">Normal</option><option value="Hiposódica">Hiposódica (Baja en sal)</option><option value="Hipoglúcida">Hipoglúcida (Baja en azúcar)</option><option value="Líquida">Líquida</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Actividad Física</label>
-                        <select id="orden_actividad">
-                            <option value="">-- Seleccione --</option><option value="Sin restricciones">Sin restricciones</option><option value="Reposo relativo">Reposo relativo</option><option value="Reposo absoluto">Reposo absoluto</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Remisión a Especialidad</label>
-                        <select id="orden_remision">
-                            <option value="">-- Ninguna --</option><option value="Medicina Interna">Medicina Interna</option><option value="Cirugía General">Cirugía General</option><option value="Ginecología">Ginecología</option><option value="Ortopedia">Ortopedia</option>
-                        </select>
-                    </div>
-                </div>
-
-                <h3 style="font-size:11px; color:var(--primary); border-bottom:1px solid #eee; padding-bottom:5px; margin-top:20px;">4. Terapias y Procedimientos (CUPS)</h3>
-                <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="field">
-                        <label>Terapias de Rehabilitación</label>
-                        <select id="orden_terapias">
-                            <option value="">-- Ninguna --</option><option value="Física">Terapia Física</option><option value="Respiratoria">Terapia Respiratoria</option><option value="Fonoaudiología">Fonoaudiología</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Procedimientos Clínicos (CUPS)</label>
-                        <select id="orden_procedimientos">
-                            <option value="">-- Ninguno --</option>
-                            <option value="890201">890201 - Consulta de primera vez por Medicina General</option>
-                            <option value="860401">860401 - Sutura de herida menor</option>
-                            <option value="860402">860402 - Curación de herida (Baja complejidad)</option>
-                            <option value="890202">890202 - Consulta de control por Especialista</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <footer>
-        <span style="color: #5f6368; font-size: 11px;">Sesión iniciada como: <strong>Dr. Watson (ID 9920)</strong></span>
-        <button class="btn-save">GUARDAR Y FINALIZAR ATENCIÓN</button>
-    </footer>
+        <button style="background:#202124; color:white; border:none; padding:15px 30px; border-radius:8px; font-weight:bold; cursor:pointer; width:100%;">GUARDAR Y FINALIZAR ATENCIÓN</button>
+    </div>
 </div>
 
 <script>
-    const CLINICAL_DB = {
-        motivos: [
-            { name: "Dolor abdominal agudo" }, { name: "Cefalea persistente" }, { name: "Control de hipertensión" },
-            { name: "Sintomatología respiratoria" }, { name: "Dolor lumbar" }, { name: "Trauma en extremidad" }
-        ],
-        relatos: [
-            { name: "Cuadro de 3 días con picos febriles y tos seca" },
-            { name: "Dolor lumbar de inicio súbito tras esfuerzo físico" },
-            { name: "Epigastralgia tipo ardor irradiada a esófago" },
-            { name: "Paciente asintomático acude a control rutinario" }
-        ],
-        plantillas_antecedentes: [
-            { name: "Hipertenso controlado, sin cirugías recientes" },
-            { name: "Diabético tipo 2, antecedente de tabaquismo pesado" },
-            { name: "Sano, niega antecedentes de importancia" }
-        ],
-        hallazgos_general: [
-            { name: "Paciente en buen estado general, hidratado, orientado" },
-            { name: "Estado general regular, facies de dolor, palidez mucocutánea" },
-            { name: "Paciente alerta, colaborador, sin signos de dificultad respiratoria" }
-        ],
-        hallazgos_abdomen: [
-            { name: "Blando, depresible, no doloroso, ruidos presentes" },
-            { name: "Dolor a la palpación profunda en fosa iliaca derecha" },
-            { name: "Abdomen distendido, con defensa muscular localizada" }
-        ],
-        hallazgos_extremidades: [
-            { name: "Simétricas, sin edemas, pulsos distales presentes" },
-            { name: "Edema grado II en miembros inferiores" },
-            { name: "Limitación funcional en rodilla derecha por dolor" }
-        ],
-        hallazgos_cabeza: [
-            { name: "Normocéfalo, pupilas isocóricas, orofaringe normal" },
-            { name: "Mucosas húmedas, otoscopia negativa bilateral" },
-            { name: "Congestión nasal, descarga retrofaríngea hialina" }
-        ],
-        recom_templates: [
-            { name: "Signos de alarma, abundante hidratación, reposo 3 días" },
-            { name: "Control de tensión diario, evitar consumo de sal" },
-            { name: "Uso de calzado adecuado, ejercicios de estiramiento" }
-        ],
-        plan_templates: [
-            { name: "Manejo ambulatorio con analgésicos y medios físicos" },
-            { name: "Inicio de esquema antibiótico y control en 72 horas" },
-            { name: "Remisión a especialista para valoración complementaria" }
-        ],
-        diagnostico: [
-            { code: "J00", name: "Rinofaringitis aguda (resfriado común)" },
-            { code: "M545", name: "Lumbago no especificado" },
-            { code: "I10", name: "Hipertensión esencial (primaria)" },
-            { code: "E119", name: "Diabetes mellitus tipo 2" },
-            { code: "K219", name: "Reflujo gastroesofágico" },
-            { code: "J029", name: "Faringitis aguda" },
-            { code: "N390", name: "Infección de vías urinarias" },
-            { code: "R51", name: "Cefalea" },
-            { code: "A90", name: "Dengue clásico" },
-            { code: "K297", name: "Gastritis aguda" }
-        ],
-        medicamento: [
-            { name: "Acetaminofén 500mg", type: "Tableta" },
-            { name: "Ibuprofeno 400mg", type: "Tableta" },
-            { name: "Losartán 50mg", type: "Tableta" },
-            { name: "Omeprazol 20mg", type: "Cápsula" },
-            { name: "Amoxicilina 500mg", type: "Cápsula" },
-            { name: "Ciprofloxacino 500mg", type: "Tableta" },
-            { name: "Metformina 850mg", type: "Tableta" },
-            { name: "Salbutamol 100mcg", type: "Inhalador" },
-            { name: "Loratadina 10mg", type: "Tableta" },
-            { name: "Diclofenaco 75mg", type: "Ampolla" }
-        ],
-        quirurgicos: [
-            { name: "Apendicetomía" }, { name: "Colecistectomía" }, { name: "Herniorrafia" }, { name: "Cesárea" }
-        ],
-        alergicos: [
-            { name: "Penicilina" }, { name: "Sulfa" }, { name: "AINES" }, { name: "Yodo" }
-        ],
-        examenes: [
-            { name: "Hemograma" }, { name: "Creatinina" }, { name: "Rayos X" }, { name: "EKG" }
-        ]
-    };
-
-    function filterClinical(type, query) {
-        const resultsEl = document.getElementById(`${type}_results`);
-        if (!query || query.length < 2) {
-            resultsEl.style.display = 'none';
-            return;
-        }
-
-        const filtered = CLINICAL_DB[type].filter(item => 
-            (item.name || "").toLowerCase().includes(query.toLowerCase()) || 
-            (item.code || "").toLowerCase().includes(query.toLowerCase())
-        );
-
-        if (filtered.length > 0) {
-            resultsEl.innerHTML = filtered.map(item => `
-                <div class="picker-item" onclick="selectClinical('${type}', '${item.code || item.name}', '${item.name || item.type}')">
-                    ${item.code ? `<strong>${item.code}</strong>` : ""} ${item.name} ${item.type ? `<small>(${item.type})</small>` : ""}
-                </div>
-            `).join('');
-            resultsEl.style.display = 'block';
-        } else {
-            resultsEl.style.display = 'none';
-        }
+    // Lógica para simular Lazy Loading (MutationObserver Test)
+    function addPhysicalField() {
+        const container = document.getElementById('dynamic-fields');
+        const div = document.createElement('div');
+        div.className = 'field';
+        div.innerHTML = `
+            <label>Hallazgos Cabeza y Cuello (Cargado dinámicamente)</label>
+            <textarea id="examen_fisico_cabeza" placeholder="Ojos, oídos, faringe..."></textarea>
+        `;
+        container.appendChild(div);
     }
 
-    function selectClinical(type, val, label) {
-        const searchEl = document.getElementById(`${type}_search`);
-        const hiddenEl = document.getElementById(type);
-        const resultsEl = document.getElementById(`${type}_results`);
-
-        searchEl.value = label;
-        hiddenEl.value = val;
-        resultsEl.style.display = 'none';
-
-        if (type === 'diagnostico') {
-            document.getElementById('diagnostico_cie10').value = val;
-        }
-    }
-
-    function showTab(tabId) {
-        document.querySelectorAll('.section-pane').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => p = t.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
-    }
-
-    function updateDiagnosticos() {
-        const cat = document.getElementById('grupo_diagnostico').value;
-        const select = document.getElementById('diagnostico');
-        select.innerHTML = '<option value="">-- Seleccione CIE-10 --</option>';
-        if (cat === "Respiratorio") {
-            select.innerHTML += '<option value="J00">J00 - Rinofaringitis aguda</option><option value="J029">J029 - Faringitis aguda</option>';
-        } else if (cat === "Osteomuscular") {
-            select.innerHTML += '<option value="M545">M545 - Lumbago no especificado</option>';
-        } else if (cat === "Cardiometabolico") {
-            select.innerHTML += '<option value="I10">I10 - Hipertensión esencial</option><option value="E119">E119 - Diabetes mellitus</option>';
-        } else if (cat === "Infeccioso") {
-            select.innerHTML += '<option value="A90">A90 - Dengue clásico</option><option value="N390">N390 - Infección de vías urinarias</option>';
-        } else if (cat === "Neurologico") {
-            select.innerHTML += '<option value="R51">R51 - Cefalea</option>';
-        } else if (cat === "Gastrointestinal") {
-            select.innerHTML += '<option value="K219">K219 - Reflujo gastroesofágico</option><option value="K297">K297 - Gastritis aguda</option>';
-        }
-    }
-
-    function updateMedicamentos() {
-        const cat = document.getElementById('grupo_farmacologico').value;
-        const select = document.getElementById('medicamento');
-        select.innerHTML = '<option value="">-- Fármaco --</option>';
-        if (cat === "Analgésicos/AINES") {
-            select.innerHTML += '<option value="Acetaminofén 500mg">Acetaminofén 500mg</option><option value="Ibuprofeno 400mg">Ibuprofeno 400mg</option><option value="Diclofenaco 75mg">Diclofenaco 75mg</option>';
-        } else if (cat === "Antibióticos") {
-            select.innerHTML += '<option value="Amoxicilina 500mg">Amoxicilina 500mg</option><option value="Ciprofloxacino 500mg">Ciprofloxacino 500mg</option>';
-        } else if (cat === "Antihipertensivos") {
-            select.innerHTML += '<option value="Losartán 50mg">Losartán 50mg</option>';
-        } else if (cat === "Gastrointestinales") {
-            select.innerHTML += '<option value="Omeprazol 20mg">Omeprazol 20mg</option>';
-        } else if (cat === "Hipoglicemiantes") {
-            select.innerHTML += '<option value="Metformina 850mg">Metformina 850mg</option>';
-        } else if (cat === "Respiratorios") {
-            select.innerHTML += '<option value="Loratadina 10mg">Loratadina 10mg</option><option value="Salbutamol 100mcg">Salbutamol 100mcg</option>';
-        }
-    }
-
-    function syncCIE10() {
-        const select = document.getElementById('diagnostico');
-        document.getElementById('diagnostico_cie10').value = select.value;
-    }
-
-    // IMC Automático
+    // Calcular IMC básico para realismo
     document.querySelectorAll('.vital').forEach(el => {
         el.addEventListener('input', () => {
             const p = parseFloat(document.getElementById('peso').value);
             const t = parseFloat(document.getElementById('talla').value) / 100;
-            if(p > 0 && t > 0) {
-                document.getElementById('imc').value = (p / (t * t)).toFixed(2);
-            }
-        });
-    });
-</script>
-
-</body>
-</html>
-html>
-ue) / 100;
             if(p > 0 && t > 0) {
                 document.getElementById('imc').value = (p / (t * t)).toFixed(2);
             }

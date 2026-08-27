@@ -1,12 +1,8 @@
 import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import useIsMobile from "../lib/useIsMobile.js";
-
-// Register ScrollTrigger locally to prevent context missing errors
-gsap.registerPlugin(ScrollTrigger);
 
 const PARTICLE_COUNT = 160;
 const CUBE_SIZE = 2.2;
@@ -195,29 +191,27 @@ export default function OnyxVsCloudScene() {
   const scrollProgress = useRef(0);
   const isMobile = useIsMobile();
 
+  // Mobile: cubes stacked vertically
+  // Desktop: cubes side by side
   const clinicPos = isMobile ? [0, 1.6, 0] : [-2.2, 0, 0];
   const cloudPos  = isMobile ? [0, -1.6, 0] : [2.2, 0, 0];
   const cameraZ   = isMobile ? 7.4 : 7;
   const cameraFov = isMobile ? 46 : 38;
 
   useEffect(() => {
-    // Wrap in gsap.context to fix "TypeError: _context2 is not a function"
-    let ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: wrapRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-        onUpdate: (self) => {
-          scrollProgress.current = self.progress;
-          if (wrapRef.current) {
-            wrapRef.current.style.setProperty("--svc-progress", self.progress.toFixed(3));
-          }
-        },
-      });
-    }, wrapRef);
-
-    return () => ctx.revert(); // Proper cleanup for React 18 Strict Mode
+    const trigger = ScrollTrigger.create({
+      trigger: wrapRef.current,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true,
+      onUpdate: (self) => {
+        scrollProgress.current = self.progress;
+        if (wrapRef.current) {
+          wrapRef.current.style.setProperty("--svc-progress", self.progress.toFixed(3));
+        }
+      },
+    });
+    return () => trigger.kill();
   }, []);
 
   return (

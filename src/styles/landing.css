@@ -78,35 +78,8 @@ body {
 .section .eyebrow-row {
   transform: translate3d(0, calc((1 - var(--sp, 1)) * 30px), 0);
   opacity: var(--sp, 1);
-  transition: transform 0.8s var(--ease-out), opacity 0.8s var(--ease-out);
+  transition: transform .6s var(--ease-out), opacity .6s var(--ease-out);
 }
-
-/* ============================================================
-   SPOTLIGHT EFFECT (Emil Kowalski style)
-   A subtle light that follows the mouse on cards.
-   ============================================================ */
-.spotlight-card {
-  position: relative;
-  overflow: hidden;
-}
-.spotlight-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-    rgba(37, 99, 235, 0.06),
-    transparent 40%
-  );
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.4s var(--ease-out);
-}
-.spotlight-card:hover::before {
-  opacity: 1;
-}
-
 
 /* ============================================================
    HORIZONTAL STICKY: Antes y después

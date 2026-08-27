@@ -1,7 +1,7 @@
 # WATSON Design System
 
 > **WATSON: Inteligencia Clínica Local**
-> Asistente médico invisible. Escucha la consulta, transcribe en tiempo real con IA local (Whisper + Qwen 2.5 vía Ollama) y rellena automáticamente la historia clínica directamente en su sistema de gestión (HIS). Cero nube, cero fuga de datos. Cumple Ley 1581 de 2012 y Resolución 1995 de 1999.
+> Asistente médico invisible. Escucha la consulta, transcribe en tiempo real con IA local (Whisper + Qwen 2.5 vía Ollama) y rellena automáticamente la historia clínica directamente en Dinámica Gerencial (HIS de SYAC). Cero nube, cero fuga de datos. Cumple Ley 1581 de 2012 y Resolución 1995 de 1999.
 
 ---
 
@@ -67,7 +67,7 @@ El motor de IA local que da soporte se llama **ONYX** (Whisper + Qwen 2.5 sobre 
 - Latencias y datos técnicos en mono: `< 800 ms`, `8.800 consultas/mes`.
 
 **Vocabulario obligatorio (palabras que SÍ entiende un gerente colombiano de clínica):**
-- Glosas EPS, historia clínica, consultorio, médico tratante, HIS.
+- Glosas EPS, historia clínica, consultorio, médico tratante, HIS, Dinámica Gerencial, SYAC.
 - Ley 1581 de 2012, Resolución 1995 de 1999.
 - "Local-first", "cero nube" — usados con moderación, en contextos técnicos.
 
@@ -192,50 +192,3 @@ Escala 4px: `4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192`. Mucho aire. Las seccio
 **Prohibido:** emoji (zero, ni en error states), unicode dingbats (✓ ✗ ★ etc), iconos de marca de redes sociales (no las usamos en el footer), iconos rellenos / duotone, iconos con esquinas redondeadas tipo iOS, PNG bitmap.
 
 **Logos:** `assets/logo.svg` (wordmark WATSON) y `assets/onyx-mark.svg` (marca técnica del motor). Ambos con uso de `currentColor` para que adopten el color del contexto.
-
----
-
-## Deploy a producción (heywatsonai.com)
-
-La landing vive en esta carpeta (`LANDING/`), pero el repositorio es un monorepo
-que también contiene backend, transcripción y auditoría. **Solo se publica la
-salida del build de esta carpeta**: `LANDING/dist/`.
-
-### Build local
-
-```bash
-bash build.sh            # desde la raíz del repo -> LANDING/dist/
-# o manualmente:
-cd LANDING && npm ci && npm run build
-```
-
-### Integración GitHub (Hostinger hPanel)
-
-1. Sitio web → heywatsonai.com → **Git** → conectar repositorio
-   `Guerkito/IA-PARA-HOSPITALES`, rama `main`.
-2. Configurar el deploy:
-
-   | Ajuste | Valor |
-   |---|---|
-   | Build command | `cd LANDING && npm ci --no-audit --no-fund && npm run build` |
-   | Public directory | `LANDING/dist` |
-
-3. Tras cada push a `main`, Hostinger buildea y publica `LANDING/dist/`.
-
-### Qué incluye el build (SEO)
-
-- `index.html` — head SEO completo (canonical, Open Graph, Twitter Card,
-  JSON-LD Organization / SoftwareApplication / FAQPage) + contenido estático
-  indexable dentro de `#root`.
-- `robots.txt` y `sitemap.xml` — referenciados por el Search Console.
-- `.htaccess` — fallback SPA de Hostinger.
-- `simulador/` — simulador interactivo (también indexable).
-
-### Verificación post-deploy
-
-```bash
-curl -I https://heywatsonai.com/robots.txt   # 200
-curl -I https://heywatsonai.com/sitemap.xml  # 200
-```
-
-Después, en Google Search Console: reenviar `https://heywatsonai.com/sitemap.xml`.

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  body { padding: 24px 32px; }
+  .row { display: grid; grid-template-columns: 140px 1fr; gap: 14px 24px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .row:last-child { border-bottom: 0; }
+  .label { font-family: var(--font-mono); font-size: 10px; color: var(--fg-subtle); letter-spacing: 0.08em; text-transform: uppercase; }
+  .mono { font-family: var(--font-mono); letter-spacing: -0.01em; color: var(--fg); }
+  .blue { color: var(--blue); }
+</style>
+</head>
+<body>
+  <div class="row"><span class="label">Latencia</span><span class="mono" style="font-size:18px">&lt; 800 ms <span class="blue">end-to-end</span></span></div>
+  <div class="row"><span class="label">Precio COP</span><span class="mono" style="font-size:24px;font-weight:600">$48.000.000 COP</span></div>
+  <div class="row"><span class="label">Volumen</span><span class="mono" style="font-size:14px">8.800 consultas/mes · 25 pacientes/médico/día</span></div>
+  <div class="row"><span class="label">Ruta API</span><span class="mono" style="font-size:13px;color:var(--fg-muted)">POST /api/v1/transcripts/{consultId}</span></div>
+</body>
+</html>
