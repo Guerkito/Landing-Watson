@@ -6,6 +6,7 @@ import {
 import { initLenis, destroyLenis } from "./lib/scroll.js";
 import { initReveals, destroyReveals } from "./lib/reveals.js";
 import { initMagnetic, destroyMagnetic } from "./lib/magnetic.js";
+import Faq from "./components/Faq.jsx";
 
 const useHeroParallax = () => {
   useEffect(() => {
@@ -68,6 +69,7 @@ export default function App() {
         <Roles />
         <OnyxVsCloud />
         <Pricing />
+        <Faq />
         <FinalCTA />
       </main>
       <Footer />

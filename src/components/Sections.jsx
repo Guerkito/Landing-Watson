@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { Icons } from "./Icons.jsx";
 import { Eyebrow, Button, Counter } from "./atoms.jsx";
 import { Widget, ChromeFrame } from "./Widget.jsx";
-import HeroScene from "../scenes/HeroScene.jsx";
-import OnyxVsCloudScene from "../scenes/OnyxVsCloudScene.jsx";
 import { CONTACT, whatsappUrl, mailtoUrl } from "../lib/contact.js";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+const HeroScene = React.lazy(() => import("../scenes/HeroScene.jsx"));
+const OnyxVsCloudScene = React.lazy(() => import("../scenes/OnyxVsCloudScene.jsx"));
 
 export const Header = () => (
   <header className="header">
@@ -29,7 +30,9 @@ export const Hero = () => {
   const [demoState, setDemoState] = useState("idle");
   return (
     <section className="bg-hero" id="top" style={{ position: "relative", overflow: "hidden" }}>
-      <HeroScene />
+      <React.Suspense fallback={null}>
+        <HeroScene />
+      </React.Suspense>
       <div className="container hero" style={{ position: "relative", zIndex: 1 }}>
         <Eyebrow>Inteligencia clínica local · Colombia</Eyebrow>
         <h1>Sus médicos están perdiendo 2 horas al día llenando formularios.</h1>
@@ -309,7 +312,9 @@ export const LiveDemo = () => (
         lede="Lo que ocurre dentro de la red de su clínica: voz capturada localmente, ONYX estructura, y los campos de Dinámica Gerencial se completan automáticamente."
       />
       <div className="live-demo-frame">
-        <HeroScene contained />
+        <React.Suspense fallback={null}>
+          <HeroScene contained />
+        </React.Suspense>
       </div>
     </div>
   </section>
@@ -431,7 +436,9 @@ export const OnyxVsCloud = () => (
         title="El audio de un paciente nunca debe salir de su clínica."
         lede="Sobre 8.800 consultas/mes, así se compara IA local con IA en nube."
       />
-      <OnyxVsCloudScene />
+      <React.Suspense fallback={null}>
+        <OnyxVsCloudScene />
+      </React.Suspense>
       <div className="compare-cards">
         <div className="card-cloud">
           <span className="label"><Icons.Cloud size={14} style={{ verticalAlign: "middle", marginRight: 6 }}/> IA en nube</span>
