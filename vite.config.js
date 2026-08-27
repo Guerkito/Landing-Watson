@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-const BUILD_ID = "20260827-r2";
+const BUILD_ID = "20260827-r3";
 
 function cacheBust() {
   return {

@@ -1,0 +1,36 @@
+.metrics {
+  padding: 100px 0;
+  background: var(--bg-bone);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.metric-card {
+  text-align: center;
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--accent-cobalt);
+  letter-spacing: -0.05em;
+  margin-bottom: 10px;
+}
+
+.metric-label {
+  font-size: 14px;
+  color: var(--stone-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  line-height: 1.4;
+  max-width: 200px;
+  margin: 0 auto;
+}
