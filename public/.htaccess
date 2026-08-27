@@ -1,0 +1,26 @@
+# Hostinger / LiteSpeed — sitio estático WATSON
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType text/css .css
+  AddType image/png .png
+  AddType image/jpeg .jpg .jpeg
+  AddType image/svg+xml .svg
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "^(index\.html)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# SPA fallback (por si se usa enlace directo)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

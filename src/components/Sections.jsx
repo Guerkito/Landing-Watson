@@ -37,7 +37,7 @@ export const Hero = () => {
           Horas que podrían estar atendiendo pacientes. Existe una forma de recuperarlas
           sin cambiar cómo trabaja su equipo. WATSON escucha la consulta, transcribe en
           tiempo real con IA local y rellena la historia clínica directamente en
-          Dinámica Gerencial.
+          su sistema actual (HIS).
         </p>
         <div className="ctas">
           <Button kind="primary" large href={whatsappUrl()} target="_blank">Agendar reunión <Icons.Arrow size={16}/></Button>
@@ -76,7 +76,7 @@ export const HowItWorks = () => {
     {
       icon: <Icons.Clipboard size={22}/>,
       title: "Historia lista",
-      desc: "Los datos llegan al formulario de Dinámica Gerencial, ya validados y listos para guardar.",
+      desc: "Los datos llegan al formulario de su HIS, ya validados y listos para guardar.",
     },
   ];
   return (
@@ -120,12 +120,12 @@ export const Problem = () => (
     <div className="container">
       <SectionHeader kicker="01 · El problema" title="En cada consultorio se repite la misma pérdida." />
       <div className="two-col">
-        <div className="problem-card">
+        <div className="problem-card spotlight-card">
           <Icons.Stethoscope size={28} className="icon"/>
           <h3>El médico digita mientras atiende.</h3>
           <p>Pierde contacto visual con el paciente. La consulta se vuelve una transacción de teclado, no una conversación clínica.</p>
         </div>
-        <div className="problem-card">
+        <div className="problem-card spotlight-card">
           <Icons.Clipboard size={28} className="icon"/>
           <h3>Las historias quedan para después.</h3>
           <p>Al final del turno, el médico reconstruye de memoria lo que pasó en doce consultas. La calidad cae y se pierden datos críticos.</p>
@@ -191,8 +191,8 @@ export const Solution = () => {
   const states = [
     { step: "01", title: "El médico habla naturalmente.", visual: "wave" },
     { step: "02", title: "ONYX transcribe y analiza en tiempo real.", visual: "json" },
-    { step: "03", title: "Historia clínica completa en Dinámica Gerencial.", visual: "form" },
-  ];
+    { step: "03", title: "Historia clínica completa en su sistema (HIS).", visual: "form" },
+    ];
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -271,7 +271,7 @@ export const Solution = () => {
                         <div className="anim-text-5" style={{ fontSize: 13, padding: "8px 12px", background: "var(--bg)", borderRadius: 6, border: "1px solid var(--border)", minHeight: 44 }}>Sumatriptán 6mg SC. Reposo relativo.</div>
                       </div>
                     </div>
-                    <div className="step-label" style={{ marginTop: 16, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--green)" }}>INYECTADO EN DINÁMICA GERENCIAL</div>
+                    <div className="step-label" style={{ marginTop: 16, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--green)" }}>INYECTADO EN EL HIS</div>
                   </div>
                   <style>{`
                     .anim-text-1, .anim-text-2, .anim-text-3, .anim-text-4, .anim-text-5 {
@@ -306,7 +306,7 @@ export const LiveDemo = () => (
       <SectionHeader
         kicker="Demo en vivo"
         title="Vea cómo se llena la historia clínica mientras el médico habla."
-        lede="Lo que ocurre dentro de la red de su clínica: voz capturada localmente, ONYX estructura, y los campos de Dinámica Gerencial se completan automáticamente."
+        lede="Lo que ocurre dentro de la red de su clínica: voz capturada localmente, ONYX estructura, y los campos de su HIS se completan automáticamente."
       />
       <div className="live-demo-frame">
         <HeroScene contained />
@@ -320,7 +320,7 @@ export const WhyDifferent = () => {
     { icon: <Icons.Settings size={24}/>, title: "Aprende su clínica en menos de 30 segundos.", body: "Mapeo automático de los formularios reales del HIS. Sin configurar campo por campo." },
     { icon: <Icons.HeartPulse size={24}/>, title: "Inteligencia por especialidad.", body: "Medicina General, Pediatría, Cardiología, Ginecología, Ortopedia, Dermatología, Psiquiatría." },
     { icon: <Icons.Shield size={24}/>, title: "Privacidad por diseño.", body: "100 % local. Audio borrado tras la consulta. Cumple Ley 1581 y Resolución 1995." },
-    { icon: <Icons.Cpu size={24}/>, title: "Sin tocar el HIS.", body: "Funciona sobre Dinámica Gerencial sin modificarlo. Sin contratos adicionales con SYAC." },
+    { icon: <Icons.Cpu size={24}/>, title: "Sin tocar el HIS.", body: "Funciona sobre su sistema actual sin modificarlo. Sin contratos adicionales con terceros." },
   ];
   return (
     <section className="section" id="diferencia">
@@ -328,7 +328,7 @@ export const WhyDifferent = () => {
         <SectionHeader kicker="05 · Diferenciación" title="Por qué WATSON funciona donde otros han fallado." />
         <div className="why-grid">
           {items.map((it) => (
-            <div className="why-card" key={it.title}>
+            <div className="why-card spotlight-card" key={it.title}>
               <div className="icon">{it.icon}</div>
               <h4>{it.title}</h4>
               <p>{it.body}</p>
@@ -475,7 +475,7 @@ export const Pricing = () => {
       pitch: "Ideal para comenzar automatizando un área específica como Pediatría u Ortopedia. El punto de entrada perfecto para ver resultados reales antes de una adopción total.",
       points: [
         "Servidor local incluido + 20 micrófonos omnidireccionales",
-        "Mapeo de 1 formato de historia clínica en Dinámica Gerencial",
+        "Mapeo de 1 formato de historia clínica en su sistema (HIS)",
         "Extensión instalada en los 20 computadores",
         "12 meses de soporte y capacitación",
       ],
@@ -489,7 +489,7 @@ export const Pricing = () => {
       pitch: "Para instituciones que quieren transformar todas sus consultas programadas y áreas prioritarias de una sola vez.",
       points: [
         "Servidor de alto rendimiento + 40 micrófonos + cableado completo",
-        "Mapeo de hasta 3 formatos en Dinámica Gerencial",
+        "Mapeo de hasta 3 formatos en su sistema (HIS)",
         "Extensión instalada en los 40 computadores",
         "12 meses de soporte y capacitación",
       ],
@@ -513,7 +513,7 @@ export const Pricing = () => {
         <SectionHeader kicker="09 · Planes" title="Tres tamaños, una filosofía: cero nube." />
         <div className="pricing">
           {plans.map((p) => (
-            <div key={p.name} className={`plan${p.recommended ? " recommended" : ""}`}>
+            <div key={p.name} className={`plan spotlight-card ${p.recommended ? "recommended" : ""}`}>
               {p.recommended && <span className="ribbon">{p.ribbonText || "Recomendado"}</span>}
               <h3>{p.name}</h3>
               <p className="scope">{p.scope}</p>
@@ -573,7 +573,7 @@ export const FinalCTA = () => {
         <div className="final-cta">
           <div>
             <h3>Hable con un asesor de Onyx.</h3>
-            <p>Le mostramos una instalación piloto sobre Dinámica Gerencial en su propia red. Sin compromiso.</p>
+            <p>Le mostramos una instalación piloto sobre su propio HIS en su propia red. Sin compromiso.</p>
 
             <div style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 12 }}>
               <a className="contact-method" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">

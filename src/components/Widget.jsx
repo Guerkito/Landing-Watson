@@ -144,18 +144,18 @@ export const ChromeFrame = ({ demoState }) => (
     <div style={{ height: 40, display: "flex", alignItems: "flex-end", padding: "0 8px" }}>
       <span style={{ width: 200, height: 32, background: "#f1f3f4", borderRadius: "10px 10px 0 0", display: "flex", alignItems: "center", padding: "0 12px", fontFamily: "system-ui", fontSize: 12, color: "#3c4043", gap: 8 }}>
         <span style={{ width: 14, height: 14, background: "#1a73e8", borderRadius: 3 }}/>
-        Dinámica Gerencial
+        Su Sistema (HIS)
       </span>
     </div>
     <div style={{ background: "#f1f3f4", padding: "8px 12px", display: "flex", alignItems: "center", gap: 10 }}>
       <span style={{ flex: 1, background: "#fff", borderRadius: 999, padding: "6px 14px", fontFamily: "system-ui", fontSize: 12, color: "#3c4043" }}>
-        his.clinicasanrafael.co/dinamica/consulta-externa
+        his.clinica.co/historia/consulta-externa
       </span>
     </div>
     <div style={{ position: "absolute", left: 0, right: 0, top: 80, bottom: 0, background: "linear-gradient(180deg,#fff,#eef1f6)", opacity: 0.9 }}>
       <div style={{ padding: 32, fontFamily: "Tahoma, system-ui", color: "#0a1530" }}>
         <div style={{ background: "#0e3a8a", color: "#fff", padding: "10px 18px", display: "inline-block", fontSize: 12, fontWeight: 600 }}>
-          DINÁMICA GERENCIAL · SYAC · Consulta externa
+          HISTORIA CLÍNICA · HIS · Consulta externa
         </div>
         <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ background: "#fff", border: "1px solid #c4cad6", padding: 12, fontSize: 11, opacity: 0.5 }}>Paciente · Andrés Suárez</div>

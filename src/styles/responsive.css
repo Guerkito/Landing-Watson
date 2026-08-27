@@ -1,0 +1,231 @@
+/* ============================================================
+   WATSON Landing — Responsive (mobile / tablet / desktop)
+   ============================================================ */
+
+/* ── Tablet landscape & small desktop ── */
+@media (max-width: 1100px) {
+  .hero { padding: 100px 40px 72px; gap: 48px; }
+  .productos-section,
+  .about-section-dark,
+  .dark-band,
+  .planes-section,
+  .cta-band,
+  .onyx-compare-section { padding-left: 40px; padding-right: 40px; }
+  .auditor-sticky-wrapper { gap: 40px; padding: 40px 36px; }
+  .auditor-right-col { height: min(520px, 62vh); }
+  .db-stats-row { grid-template-columns: repeat(2, 1fr); }
+  .db-form-layout { grid-template-columns: 1fr; }
+  .about-grid { gap: 48px; }
+  .planes-grid { grid-template-columns: 1fr; max-width: 520px; margin-left: auto; margin-right: auto; }
+}
+
+/* ── Tablet portrait ── */
+@media (max-width: 900px) {
+  nav { padding: 14px 20px; }
+  .nav-cta { padding: 9px 18px; font-size: 12px; }
+  .logo { font-size: 16px; }
+
+  .hero-section { padding-top: 64px; }
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 88px 20px 56px;
+    gap: 36px;
+  }
+  .hero-h1 { letter-spacing: -1.2px; }
+  .hero-btns { flex-wrap: wrap; }
+  .hero-stat-row { flex-direction: column; }
+
+  .productos-section {
+    padding: 72px 20px;
+    max-width: 100%;
+  }
+  .services-top { grid-template-columns: 1fr; margin-top: 40px; }
+
+  .dark-band { padding: 56px 20px; overflow: hidden; }
+  .dark-band-inner { gap: 40px; }
+  .db-right h2 { font-size: clamp(28px, 5vw, 40px); }
+  .db-right p { font-size: 16px; }
+  .db-stats-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .db-stat-num { font-size: 28px; }
+  .db-visual {
+    min-height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+  .db-hc-card { padding: 28px 20px; border-radius: 20px; }
+  .db-hc-title { font-size: 12px; word-break: break-word; }
+  .db-field-val { padding: 12px 14px; font-size: 14px; min-height: 44px; }
+
+  .watson-extension {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    right: auto;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .floating-badge {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    margin-top: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .about-section-dark { padding: 72px 20px 88px; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .big-stats {
+    margin-top: 40px;
+    padding: 32px 20px;
+    border-radius: 24px;
+  }
+  .big-stats-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .big-stat {
+    border-right: none;
+    border-bottom: 1px solid var(--gray200);
+    padding: 0 0 20px;
+  }
+  .big-stat-num { font-size: 36px; }
+
+  .metric-card.redesigned {
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  .metric-val.redesigned {
+    width: 100%;
+    justify-content: flex-start;
+    height: auto;
+    margin-top: 8px;
+    text-align: left;
+  }
+
+  /* Auditor */
+  .auditor-section {
+    margin-top: -32px;
+    padding: 72px 16px 64px;
+    border-radius: 28px 28px 0 0;
+  }
+  .auditor-sticky-wrapper {
+    flex-direction: column;
+    gap: 28px;
+    padding: 28px 20px;
+    border-radius: 24px;
+  }
+  .auditor-intro { margin-bottom: 28px; }
+  .auditor-left-col { padding: 0; }
+  .auditor-step {
+    min-height: auto;
+    padding: 18px 0;
+    transform: none;
+    border-bottom: 1px solid var(--gray100);
+  }
+  .auditor-step:last-child { border-bottom: none; }
+  .auditor-step.active { transform: none; }
+  .auditor-step:not(.active) h4,
+  .auditor-step:not(.active) p {
+    color: var(--gray600);
+  }
+  .auditor-step h4 { font-size: 19px; }
+  .auditor-right-col {
+    position: static;
+    width: 100%;
+    height: auto;
+    min-height: 360px;
+  }
+  .auditor-dashboard { min-height: 360px; border-radius: 20px; }
+  .letter-panel { width: 100%; padding: 24px 20px; }
+  .dh-header { flex-wrap: wrap; gap: 10px; padding: 14px 16px; }
+  .dh-title { font-size: 12px; line-height: 1.4; flex: 1; min-width: 0; }
+  .dh-badge { font-size: 11px; padding: 5px 10px; white-space: nowrap; }
+  .dh-row { gap: 8px; padding: 12px 16px; }
+  .dh-hc { font-size: 12px; min-width: 0; flex: 1 1 100%; }
+  .dh-score, .dh-val { font-size: 12px; }
+  .pdf-box { padding: 32px 20px; }
+
+  .planes-section { padding: 72px 20px; }
+  .planes-grid { grid-template-columns: 1fr; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .onyx-compare-section { padding: 72px 16px; }
+  .compare-cards { grid-template-columns: 1fr; gap: 16px; }
+  .compare-cards h4 { font-size: 18px; }
+  .compare-val { font-size: 28px; }
+
+  .cta-band { padding: 56px 20px; }
+  .cta-btns { flex-direction: column; align-items: stretch; max-width: 320px; margin: 0 auto; }
+  .btn-white, .btn-ghost { width: 100%; justify-content: center; }
+
+  footer {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 32px 20px;
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 560px) {
+  .nav-cta { padding: 8px 14px; font-size: 11px; }
+
+  .hero { padding: 80px 16px 48px; }
+  .hero-h1 { font-size: clamp(32px, 9vw, 44px); }
+  .hero-sub { font-size: 15px; max-width: 100%; }
+  .hero-btns { flex-direction: column; align-items: stretch; }
+  .btn-dark, .btn-outline { width: 100%; justify-content: center; }
+  .pill { font-size: 12px; padding: 6px 12px; }
+  .stat-big { font-size: 26px; }
+  .hero-dark-card { padding: 20px; border-radius: 18px; }
+  .hdc-chip { font-size: 10px; padding: 5px 10px; }
+
+  .productos-section { padding: 56px 16px; }
+  .svc-card { padding: 24px; }
+
+  .dark-band { padding: 48px 16px; }
+  .db-stats-row { grid-template-columns: 1fr; }
+  .db-stat { padding: 16px; }
+  .db-hc-card { padding: 20px 16px; }
+  .db-field-grid { grid-template-columns: 1fr; }
+
+  .about-section-dark { padding: 56px 16px 72px; }
+  .big-stats { padding: 24px 16px; border-radius: 20px; }
+  .big-stats-grid { grid-template-columns: 1fr; gap: 20px; }
+  .big-stat { padding-bottom: 16px; }
+  .big-stat-num { font-size: 32px; }
+  .big-stat-label { max-width: 100%; font-size: 12px; }
+
+  .auditor-section {
+    margin-top: -24px;
+    padding: 56px 12px 48px;
+    border-radius: 24px 24px 0 0;
+  }
+  .auditor-sticky-wrapper {
+    padding: 22px 16px;
+    border-radius: 20px;
+    gap: 24px;
+  }
+  .auditor-sticky-wrapper .section-h2 {
+    font-size: clamp(24px, 7vw, 32px) !important;
+  }
+  .auditor-sticky-wrapper .section-sub { font-size: 15px; }
+  .auditor-step h4 { font-size: 17px; flex-wrap: wrap; gap: 8px; }
+  .auditor-step p { font-size: 14px; }
+  .auditor-right-col { min-height: 320px; }
+  .auditor-dashboard { min-height: 320px; border-radius: 16px; }
+
+  .planes-section { padding: 56px 16px; }
+  .plan-price { font-size: 26px; }
+
+  .cta-band h2 { font-size: clamp(26px, 7vw, 36px); }
+  .cta-band p { font-size: 15px; }
+
+  .section-h2 { max-width: 100%; }
+}
+
+/* ── Very small phones ── */
+@media (max-width: 380px) {
+  .logo { font-size: 14px; }
+  .nav-cta { padding: 8px 14px; }
+  .dh-row { flex-wrap: wrap; }
+  .dh-score { margin-left: 20px; }
+}
