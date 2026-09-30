@@ -557,7 +557,8 @@ export default function App() {
           <div className="reveal">
             <p className="section-tag" style={{ color: "var(--cyan)" }}>CÓMO FUNCIONA</p>
             <h2 className="section-h2" style={{ color: "white" }}>A través de IA clínica local y procesamiento en tiempo real</h2>
-            <p className="section-sub" style={{ color: "rgba(255,255,255,0.7)" }}>Watson corre completamente dentro de la red de su clínica. El audio se procesa localmente. Los datos del paciente nunca salen del hospital. Cumplimiento total con Habeas Data y la Resolución 1995/1999.</p>
+            <p className="section-sub" style={{ color: "rgba(255,255,255,0.7)" }}>En la configuración local, Watson opera dentro de la red de su clínica y el audio se procesa localmente. El tratamiento de datos se acuerda y documenta con su equipo, conforme a Habeas Data y la Resolución 1995/1999.</p>
+            <a className="policy-inline" href="/politica-de-datos.html">Cómo tratamos los datos en Clinic y Auditor →</a>
             <div style={{ marginTop: "36px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <button className="btn-dark" style={{ fontSize: "14px", padding: "12px 24px", background: "var(--blue)", border: "none" }}>Solicitar demo &rarr;</button>
               <button className="btn-outline" style={{ fontSize: "14px", padding: "11px 22px", borderColor: "rgba(255,255,255,0.3)", color: "white" }}>Ver video</button>
@@ -868,7 +869,7 @@ export default function App() {
       <footer>
         <div className="footer-logo">{`{ ↖ `}<span>WATSON</span>{` }`}</div>
         <div className="footer-info">Desarrollado por Onyx &middot; Fusagasugá, Colombia &middot; 2026 &middot; v{__BUILD_ID__}</div>
-        <div className="footer-right">Procesamiento 100% local &middot; Habeas Data garantizado</div>
+        <div className="footer-right"><a href="/politica-de-datos.html">Política de datos personales</a> &middot; <a href="/politica-de-datos.html#clinic">Watson Clinic</a> &middot; <a href="/politica-de-datos.html#auditor">Watson Auditor</a></div>
       </footer>
     </>
   );

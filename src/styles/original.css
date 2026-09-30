@@ -735,3 +735,9 @@ footer { background:var(--gray50); border-top:1px solid var(--gray200); padding:
   gap: 16px;
 }
 .hero-stat-row .stat-float-card { flex: 1; min-width: 0; }
+
+/* Política de datos */
+.footer-right a { color:var(--gray600); text-underline-offset:3px; }
+.footer-right a:focus-visible { outline:2px solid var(--blue); outline-offset:3px; }
+.policy-inline { display:inline-block; margin-top:16px; color:#7dd3fc; font-size:14px; font-weight:600; text-underline-offset:4px; }
+.policy-inline:focus-visible { outline:2px solid #7dd3fc; outline-offset:4px; }
