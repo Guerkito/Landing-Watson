@@ -19,6 +19,8 @@ Options -Indexes +FollowSymLinks
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+  # Política de datos: URL limpia sin .html
+  RewriteRule ^politica-de-datos/?$ /politica-de-datos.html [L]
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
