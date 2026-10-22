@@ -508,7 +508,7 @@ export default function App() {
             {/* Watson Extension Simulator - Small Corner Widget */}
             <div className="watson-extension dark-mode">
               <div className="ext-header">
-                <div className="ext-title"><Icons.Sparkles size={16} color="var(--cyan)"/> Watson AI</div>
+                <div className="ext-title"><Icons.Sparkles size={16} color="var(--blue)"/> Watson AI</div>
                 <div className="ext-status-badge" id="ext-badge">ESCUCHANDO</div>
               </div>
               <div className="ext-body">
