@@ -834,6 +834,33 @@ export default function App() {
         </div>
       </div>
 
+      <section className="founder-section reveal" id="founder" style={{ padding: "80px 24px", background: "#f8fafc", display: "flex", justifyContent: "center" }}>
+        <div style={{ maxWidth: "1000px", display: "flex", flexWrap: "wrap", gap: "40px", alignItems: "center" }}>
+          <img src="/assets/Para-Ads-2048x1365.webp" alt="Fundador" style={{ width: "100%", maxWidth: "400px", borderRadius: "16px", objectFit: "cover", boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }} />
+          <div style={{ flex: "1 1 400px" }}>
+            <p className="section-tag" style={{ color: "var(--cyan)" }}>HABLEMOS</p>
+            <h2 className="section-h2" style={{ color: "var(--navy)", maxWidth: "100%", fontSize: "clamp(28px, 3.5vw, 40px)", lineHeight: 1.2 }}>Hagamos que su clínica recupere su tiempo</h2>
+
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "12px", marginTop: "12px", marginBottom: "18px" }}>
+              <span style={{ fontSize: "11px", fontWeight: 800, background: "var(--blue-light)", color: "var(--blue)", padding: "6px 12px", borderRadius: "20px", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                Luis Alejandro Velandia Cano
+              </span>
+              <a href="https://www.linkedin.com/in/alejandro-velandia-cano-76943819b/" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", textDecoration: "none", color: "#0a66c2", fontSize: "13px", fontWeight: 700, gap: "6px" }}>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style={{ verticalAlign: "middle" }}><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                LinkedIn
+              </a>
+            </div>
+
+            <p className="section-sub" style={{ marginTop: "16px", color: "var(--gray600)", maxWidth: "100%", fontSize: "17px", lineHeight: 1.6 }}>
+              Entendemos que cada institución tiene flujos únicos. Agende un espacio directo para evaluar si Watson es la solución adecuada para su equipo médico y cómo podemos implementarlo de manera fluida.
+            </p>
+            <a className="btn-dark" style={{ marginTop: "24px", display: "inline-block", background: "var(--blue)", border: "none", padding: "12px 24px", color: "white", textDecoration: "none", fontWeight: 600, borderRadius: "8px" }} href="https://calendly.com/heywatsonai/30min" target="_blank" rel="noopener noreferrer">
+              Agendar llamada de 30 min &rarr;
+            </a>
+          </div>
+        </div>
+      </section>
+
       <div className="cta-band">
         <h2 className="reveal">¿Listo para que Watson cuide<br/>sus <em>historias clínicas</em>?</h2>
         <p className="reveal">Le mostramos la demo en vivo en su propia instalación de Dinámica Gerencial. 20 minutos. Sin compromisos.</p>
