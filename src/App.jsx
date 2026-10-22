@@ -495,7 +495,7 @@ export default function App() {
                   </div>
                   <div className="db-field" style={{ marginTop: "20px" }}>
                     <div className="db-field-label">Diagnóstico Principal (CIE-10)</div>
-                    <div className="db-field-val" id="df2" style={{ color: "var(--cyan)", fontWeight: 600 }}></div>
+                    <div className="db-field-val" id="df2" style={{ color: "var(--blue)", fontWeight: 600 }}></div>
                   </div>
                   
                   <div className="db-status" id="dbstatus" ref={dbStatusRef} style={{ display: "none" }}>
